@@ -1,0 +1,24 @@
+#include "xml_parser.hpp"
+#include "neuralnetwork.hpp"
+
+typedef boost::shared_ptr<anpu::NeuralNetwork> NeuralNetworkPtr ;
+
+int main(int argc, char *argv[])
+{
+	NeuralNetworkPtr rootPtr ;
+	anpu::XMLParser currXMLParser(argv[1], rootPtr);
+	rootPtr->createDottyFile();
+	rootPtr->randomizeWeights(2.4,3.9);
+	//rootPtr->validateData("../data/xor_inputs.data");
+	rootPtr->writeXML("../data/sobel_output.xml");
+	//rootPtr->trainNeuralNetwork("../data/test1_inputs.data" , "../data/test1_target_output.data", 0.001) ;
+	//rootPtr->printNeurons();
+	// Read the xml data from the configuration input file
+	// Create the ANN
+	// Create the Layers
+	// Add Neurons to each layer
+	// Update the connections between the Neurons
+	// Create the output dotty file
+	// Create the JPEG file from the dotty file
+
+}
