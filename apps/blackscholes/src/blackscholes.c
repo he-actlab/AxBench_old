@@ -468,7 +468,7 @@ int count_nn_total  = 0;
             #endif
 
 #ifdef ERR_CHK
-        #ifdef NPU_FANN
+        #ifndef NPU_OBSERVATION
             priceDelta = data[i].DGrefval - price_orig * (double)data[i].strike ;
             if( fabs(priceDelta) >= 1e-4 ){
                 printf("Error on %d. Computed=%.5f, Ref=%.5f, Delta=%.5f\n",
