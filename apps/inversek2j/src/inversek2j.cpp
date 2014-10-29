@@ -21,7 +21,9 @@ int main(int argc, const char* argv[])
 {
 	int n, x;
 
-	n = atoi(argv[1]) ;
+	#ifdef NPU_OBSERVATION
+		n = atoi(argv[1]) ;
+	#endif
 
 
 
@@ -49,13 +51,15 @@ int main(int argc, const char* argv[])
 
 
 	#ifdef NPU_FANN
-		std::string nn_name = argv[2] ;
+		std::string nn_name = argv[1] ;
 		fann_type* parrotOut ;
 		struct fann *ann ;
 
 		std::ofstream diffFile ;
 		diffFile.open("./data/fann_difference.data");
 		diffFile.precision(8);
+
+		
 
 		diffFile << "In1\tIn2\tOut1\tOut1_Orig\tOut2\tOut2_Orig\n" ;
 
@@ -74,6 +78,26 @@ int main(int argc, const char* argv[])
 		boost::shared_ptr<anpu::NeuralNetwork> currNeuralNetworkPtr ;
 		anpu::XMLParser currXMLParser(nn_name, currNeuralNetworkPtr, false) ;
 	#endif
+
+
+
+	#ifdef NPU_FANN
+		std::ifstream data("./data/inversek2j.data");
+		int number;
+		data >> number;
+		std::cout << "Total number of inputs: " << number << std::endl;
+		n = number;
+
+		int in, out;
+		data >> in;
+		data >> out;
+		std::cout << "Number of inputs: 	" << in 	<< std::endl;
+		std::cout << "Number of outputs:	" << out 	<< std::endl;
+
+		float in_data1, in_data2;
+		float out_data1, out_data2;
+	#endif
+
 
 	// Number of iteration
 	std::cout << "# Number of iterations: " << n << std::endl ;
@@ -97,14 +121,29 @@ int main(int argc, const char* argv[])
 		dataFile << 2 << std::endl ;
 		dataFile << 2 << std::endl ;
 	#endif
+
+
+
+
 	for(int i = 0 ; i < n * 2 * 2 ; i += 2 * 2)
 	{
-		x = rand() ;
-		t1t2xy[i] = fabs((((float)x)/RAND_MAX)) * PI / 2 ;
 
-		x = rand() ;
-		t1t2xy[i + 1] = fabs((((float)x)/RAND_MAX)) * PI / 2 ;
+		#ifdef NPU_OBSERVATION
+			x = rand() ;
+			t1t2xy[i] = fabs((((float)x)/RAND_MAX)) * PI / 2 ;
 
+			x = rand() ;
+			t1t2xy[i + 1] = fabs((((float)x)/RAND_MAX)) * PI / 2 ;
+		#endif
+
+
+		#ifdef NPU_FANN
+			data >> in_data1 	>> 	in_data2;
+			data >> out_data1 	>>	out_data2;
+
+			t1t2xy[i] = out_data1;
+			t1t2xy[i+1] = out_data2;
+		#endif
 
 		#ifdef NPU_OBSERVATION
 			float theta1 = t1t2xy[i] ;
@@ -206,21 +245,41 @@ int main(int argc, const char* argv[])
 			diffFile << t1t2xy[ i + 0 ] << "\t" << out1 << "\t" ;
 			diffFile << t1t2xy[ i + 1 ] << "\t" << out2 << std::endl ;
 
-			e = fabs(out1 - t1t2xy[i+0]) + fabs(out2 - t1t2xy[i + 1]) ;
-			//printf("e: %f\n", e);
-			double denominator = fabs(out1 + out2) ;
-			if(isnan(e))
-				continue;
-			if(denominator == 0)
-			{
-				e = 0 ;
-			}
-			else
-			{
-				e /= denominator ;
-				count++;
-			}
 
+			float diff1 = out1 - t1t2xy[i+0];
+			float diff2 = out2 - t1t2xy[i+1];
+
+			float nominator 	= sqrt(diff1*diff1+diff2*diff2);
+			float denominator 	= sqrt(out1*out1+out2*out2);
+
+
+			if (denominator==0)
+				e = 1;
+			else if (isnan(nominator) or isnan(denominator))
+				e = 1;
+			else if (nominator / denominator > 1)
+				e = 1;
+			else
+				e = nominator / denominator;
+
+
+
+
+			// e = fabs(out1 - t1t2xy[i+0]) + fabs(out2 - t1t2xy[i + 1]) ;
+			// //printf("e: %f\n", e);
+			// double denominator = fabs(out1 + out2) ;
+			// if(isnan(e))
+			// 	continue;
+			// if(denominator == 0)
+			// {
+			// 	e = 0 ;
+			// }
+			// else
+			// {
+			// 	e /= denominator ;
+			// 	count++;
+			// }
+			count++;
 			absError += e;
 		#endif
 
