@@ -468,7 +468,15 @@ int count_nn_total  = 0;
             #endif
 
 #ifdef ERR_CHK
-        #ifndef NPU_OBSERVATION
+        #ifdef NPU_FANN
+            priceDelta = data[i].DGrefval - price_orig * (double)data[i].strike ;
+            if( fabs(priceDelta) >= 1e-4 ){
+                printf("Error on %d. Computed=%.5f, Ref=%.5f, Delta=%.5f\n",
+                       i, price, data[i].DGrefval, priceDelta);
+                numError ++;
+            }
+        #endif
+        #ifdef NPU_SW
             priceDelta = data[i].DGrefval - price_orig * (double)data[i].strike ;
             if( fabs(priceDelta) >= 1e-4 ){
                 printf("Error on %d. Computed=%.5f, Ref=%.5f, Delta=%.5f\n",
