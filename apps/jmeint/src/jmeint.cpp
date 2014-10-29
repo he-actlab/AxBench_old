@@ -31,12 +31,58 @@ int main(int argc, char* argv[])
 		std::cout << "cannot allocate memory for the triangle coordinates!" << std::endl;
 		return -1 ;
 	}
-	srand (time(NULL));
-	for(i = 0 ; i < n * 6 * 3 ; ++i)
-	{
-		x = rand() % 10 ;
-		xyz[i] = ((float)x)/10 ;
-	}
+
+	#ifdef NPU_OBSERVATION
+		srand (time(NULL));
+		for(i = 0 ; i < n * 6 * 3 ; ++i)
+		{
+			x = rand();
+			xyz[i] = ((float)x)/(float)RAND_MAX;
+		}
+	#endif
+
+	#ifdef NPU_FANN
+		std::ifstream dataIn("./data/jmeint.data");
+		// pass two first line
+		int number;
+		dataIn >> number;
+		std::cout << "Total Number: " << number << std::endl;
+
+		int in, out;
+		dataIn >> in;
+		dataIn >> out;
+		std::cout << "Number of input: 	" 	<< in 	<< 	std::endl;
+		std::cout << "Number of output: "	<<	out << 	std::endl;
+
+		i = 0;
+		while(i < n)
+		{
+			float a[18];
+			dataIn >> 	a[0] 	>> 	a[1] 	>> 	a[2] 	>> a[3] 	>> a[4] 		>> a[5] >>
+						a[6]	>>	a[7]	>> 	a[8]	>> a[9]		>> a[10]		>> a[11] >>
+						a[12]	>> 	a[13] 	>> 	a[14] 	>> a[15] 	>> a[16]	 	>> a[17];
+
+			for(int j = 0 ; j < 18; j++)
+			{
+				xyz[i * 18 + j] = a[j];
+			}
+
+
+			// dataIn >> 	xyz[i * 18 + 0] 	>> xyz[i * 18 + 1] 		>> xyz[i * 18 + 2] >>
+			// 			xyz[i * 18 + 3] 	>> xyz[i * 18 + 4] 		>> xyz[i * 18 + 5] >>
+			// 			xyz[i * 18 + 6] 	>> xyz[i * 18 + 7]		>> xyz[i * 18 + 8] >>
+			// 			xyz[i * 18 + 9] 	>> xyz[i * 18 + 10] 	>> xyz[i * 18 + 11] >>
+			// 			xyz[i * 18 + 12] 	>> xyz[i * 18 + 13]		>> xyz[i * 18 + 14] >>
+			// 			xyz[i * 18 + 15] 	>> xyz[i * 18 + 16] 	>> xyz[i * 18 + 17] ;
+			float out1, out2;
+			dataIn >> out1 >> out2 ;
+			//std::cout << out1 << out2 << std::endl;
+
+			i++;
+		}
+
+
+	#endif
 
 
 	#ifdef NPU_SW
@@ -96,7 +142,7 @@ int main(int argc, char* argv[])
 	jmeintDataFile.precision(4) ;
 
 	jmeintDataFile << n << std::endl ;
-	jmeintDataFile << 18 << "\n" << 1 << std::endl ; 
+	jmeintDataFile << 18 << "\n" << 2 << std::endl ; 
 
 #endif
 
@@ -138,7 +184,7 @@ int main(int argc, char* argv[])
 
 			double threshold = 0.00 ;
 			//std::cout << "data: " << parrotOut[0] << std::endl;
-			if(parrotOut[0] > 0.5 )
+			if(parrotOut[0] > parrotOut[1] )
 			{
 				x = 0 ;
 			}
@@ -162,15 +208,15 @@ int main(int argc, char* argv[])
 
 			diffFile << xyz + i + 0 * 3 << 
 
-			diffFile << parrotOut[0] << "\t" << x_orig << "\t" << x << std::endl ;
+			diffFile << parrotOut[0] << "\t" << parrotOut[1] << "\t" << x_orig << "\t" << x << std::endl ;
 			// if(x!= x_orig)
 			// 	diffFile << "x" ;
 			// else
 			// 	diffFile << "-" ;
 			// diffFile << std::endl ;
 
-			classifier_data << parrotOut[0] << "\n";
-			classifier_data << x_orig << "\n";
+			//classifier_data << parrotOut[0] << "\n";
+			//classifier_data << x_orig << "\n";
 
 
 			if(x != x_orig)
@@ -218,11 +264,11 @@ int main(int argc, char* argv[])
 
 			if(x == 0)
 			{
-				jmeintDataFile << "0.9";
+				jmeintDataFile << "0.8 0.2";
 			}
 			else
 			{
-				jmeintDataFile << "0.1";
+				jmeintDataFile << "0.2 0.8";
 			}
 			if(i != ((n-1) * 6 * 3))
 			{
