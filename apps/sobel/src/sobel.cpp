@@ -19,21 +19,23 @@
 int main ( int argc, const char* argv[])
 {
 	int x, y;
-	float s;
+	float s = 0;
 
 	#ifndef NPU_OBSERVATION
-		float s_orig;
+		float s_orig = 0;
 	#endif
 
 	// Source and destination image	
 	boost::shared_ptr<Image> srcImagePtr(new Image());
 	boost::shared_ptr<Image> dstImagePtr(new Image());
 
+
 	float w[][3] = {
 		{0, 0, 0},
 		{0, 0, 0},
 		{0, 0, 0}
-	} ;
+	};
+
 
 
 	srcImagePtr->loadRgbImage( argv[1] ); // source image
@@ -57,7 +59,7 @@ int main ( int argc, const char* argv[])
 		fann_type* parrotOut;
 		struct fann *ann;
 		ann = fann_create_from_file(nn_name.c_str());
-		std::cout << "# Creating the NN from the FANN configuration file...";
+		std::cout << "# Creating the NN from the FANN configuration file...\n";
 	#endif
 
 	#ifdef NPU_ANALOG
@@ -88,7 +90,7 @@ int main ( int argc, const char* argv[])
 		origImagePtr->makeGrayscale( ) ;
 	#endif
 
-	std::cerr << "# The image is converted to GrayScale..." << std::endl ;
+	std::cerr << "# The image is converted to GrayScale...\n" << std::endl ;
 	y = 0 ;
 	
 	// Start performing Sobel operation
