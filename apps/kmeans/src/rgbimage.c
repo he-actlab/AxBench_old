@@ -1,9 +1,10 @@
 /*
- * rgb_image.c
- *
- *  Created on: May 1, 2012
- *      Author: Hadi Esmaeilzadeh <hadianeh@cs.washington.edu>
+ * rgbimage.c
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
+
 
 #include "rgbimage.h"
 #include <stdio.h>

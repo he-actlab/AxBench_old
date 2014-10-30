@@ -1,9 +1,10 @@
 /*
  * segmentation.c
- *
- *  Created on: May 6, 2012
- *      Author: Hadi Esmaeilzadeh <hadianeh@cs.washington.edu>
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
+
 
 #include "segmentation.h"
 #include <stdio.h>
@@ -24,8 +25,6 @@ int initClusters(Clusters* clusters, int k, float scale) {
 	}
 
 	clusters->k = k;
-//	printf("===========================\n");
-//	printf("k = %d\n", clusters->k);
 	for (i = 0; i < clusters->k; i ++) {
 		x = (((float)rand())/RAND_MAX) * scale;
 		clusters->centroids[i].r = x;
@@ -37,15 +36,8 @@ int initClusters(Clusters* clusters, int k, float scale) {
 		clusters->centroids[i].b = x;
 
 		clusters->centroids[i].n = 0;
-
-//		printf("c[%d] = (%f, %f, %f; %d)\n", i,
-//			clusters->centroids[i].r,
-//			clusters->centroids[i].g,
-//			clusters->centroids[i].b,
-//			clusters->centroids[i].n
-//		);
 	}
-//	printf("===========================\n");
+
 
 	return 1;
 }
@@ -98,18 +90,5 @@ void segmentImage(RgbImage* image, Clusters* clusters, int n) {
 			image->pixels[y][x].b = clusters->centroids[image->pixels[y][x].cluster].b;
 		}
 	}
-
-//	printf("===========================\n");
-//	printf("k = %d\n", clusters->k);
-//	for (i = 0; i < clusters->k; i ++) {
-//		printf("c[%d] = (%f, %f, %f; %d)\n", i,
-//			clusters->centroids[i].r,
-//			clusters->centroids[i].g,
-//			clusters->centroids[i].b,
-//			clusters->centroids[i].n
-//		);
-//	}
-//	printf("===========================\n");
-
 }
 

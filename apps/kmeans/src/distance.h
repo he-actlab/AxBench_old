@@ -1,9 +1,10 @@
 /*
  * distance.h
- *
- *  Created on: May 7, 2012
- *      Author: hadianeh
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
+
 
 #ifndef DISTANCE_H_
 #define DISTANCE_H_
