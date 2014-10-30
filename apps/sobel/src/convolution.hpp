@@ -1,8 +1,8 @@
 /*
  * convolution.hpp
- *
- * Created on: Sep. 9, 2013
- * 		Author: Amir Yazdanbakhsh <yazdanbakhsh@wisc.edu>
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
 
  #ifndef __CONVOLUTION_HPP__

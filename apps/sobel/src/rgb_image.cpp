@@ -1,3 +1,10 @@
+/*
+ * rgb_image.cpp
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #include "rgb_image.hpp"
 
 void Image::printPixel(int x, int y)

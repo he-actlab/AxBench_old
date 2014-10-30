@@ -2,7 +2,7 @@
  * rgb_image.hpp
  * 
  * Created on: Sep 9, 2013
- *				Author: Amir Yazdanbakhsh <yazdanbakhsh@wisc.edu>
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
 
  #ifndef __RGB_IMAGE_HPP__
