@@ -1,4 +1,4 @@
-NPU_MODE	:=	NPU_SW
+NPU_MODE	:=	NPU_FANN
 
 PREFIX=${PARSECDIR}/pkgs/apps/blackscholes/inst/${PARSECPLAT}
 

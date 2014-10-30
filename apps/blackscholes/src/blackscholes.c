@@ -263,9 +263,9 @@ int bs_thread(void *tid_ptr) {
 
 
     #ifdef NPU_ANALOG
-        std::ofstream sw_diff ;
-        sw_diff.open("./data/npu_analog_diff.data");
-        sw_diff << "Price_Orig\tPriceBlackscholes\tPrice_NN\n";
+        std::ofstream analog_diff ;
+        analog_diff.open("./data/npu_analog_diff.data");
+        analog_diff << "Price_Orig\tPriceBlackscholes\tPrice_NN\n";
         int count_error = 0;
     #endif
 
@@ -322,9 +322,9 @@ int count_nn_total  = 0;
                                          otype[i], 0, &N1, &N2);
 
 
-                sw_diff << data[i].DGrefval << "\t" ;
-                sw_diff << price_orig * DIVIDE << "\t";
-                sw_diff << outputData[0] * DIVIDE << "\n";
+                analog_diff << data[i].DGrefval << "\t" ;
+                analog_diff << price_orig * DIVIDE << "\t";
+                analog_diff << outputData[0] * DIVIDE << "\n";
 
              #endif
 
@@ -438,7 +438,7 @@ int count_nn_total  = 0;
 
 
     #ifdef NPU_ANALOG
-        sw_diff.close();
+        analog_diff.close();
     #endif
 
     #ifdef NPU_FANN
