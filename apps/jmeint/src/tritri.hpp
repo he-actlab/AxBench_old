@@ -1,3 +1,10 @@
+/*
+ * tritri.hpp
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #ifndef __TRITRI_HPP__
 #define __TRITRI_HPP__
 #include <cstdlib>

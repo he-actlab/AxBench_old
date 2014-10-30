@@ -1,3 +1,10 @@
+/*
+ * tritri.cpp
+ * 
+ * Created on: Sep 9, 2013
+ *      Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #include "tritri.hpp"
 
 #include <cmath>

@@ -1,3 +1,10 @@
+/*
+ * fft.cpp
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #include "tritri.hpp"
 
 #include <fstream>
@@ -22,7 +29,7 @@ int main(int argc, char* argv[])
 
 	n = atoi(argv[1]) ;
 
-	std::cout << "# Number of iterations: " << n << std::endl;
+	//std::cout << "# Number of iterations: " << n << std::endl;
 
 	float* xyz = (float*)malloc(n * 6 * 3 * sizeof (float)) ;
 
@@ -46,13 +53,13 @@ int main(int argc, char* argv[])
 		// pass two first line
 		int number;
 		dataIn >> number;
-		std::cout << "Total Number: " << number << std::endl;
+		//std::cout << "Total Number: " << number << std::endl;
 
 		int in, out;
 		dataIn >> in;
 		dataIn >> out;
-		std::cout << "Number of input: 	" 	<< in 	<< 	std::endl;
-		std::cout << "Number of output: "	<<	out << 	std::endl;
+		//std::cout << "Number of input: 	" 	<< in 	<< 	std::endl;
+		//std::cout << "Number of output: "	<<	out << 	std::endl;
 
 		i = 0;
 		while(i < n)
@@ -67,16 +74,8 @@ int main(int argc, char* argv[])
 				xyz[i * 18 + j] = a[j];
 			}
 
-
-			// dataIn >> 	xyz[i * 18 + 0] 	>> xyz[i * 18 + 1] 		>> xyz[i * 18 + 2] >>
-			// 			xyz[i * 18 + 3] 	>> xyz[i * 18 + 4] 		>> xyz[i * 18 + 5] >>
-			// 			xyz[i * 18 + 6] 	>> xyz[i * 18 + 7]		>> xyz[i * 18 + 8] >>
-			// 			xyz[i * 18 + 9] 	>> xyz[i * 18 + 10] 	>> xyz[i * 18 + 11] >>
-			// 			xyz[i * 18 + 12] 	>> xyz[i * 18 + 13]		>> xyz[i * 18 + 14] >>
-			// 			xyz[i * 18 + 15] 	>> xyz[i * 18 + 16] 	>> xyz[i * 18 + 17] ;
 			float out1, out2;
 			dataIn >> out1 >> out2 ;
-			//std::cout << out1 << out2 << std::endl;
 
 			i++;
 		}
@@ -85,7 +84,7 @@ int main(int argc, char* argv[])
 	#endif
 
 
-	#ifdef NPU_SW
+	#ifdef NPU_ANALOG
 		std::ofstream diffFile ;
 		diffFile.open("./data/difference_nn.data") ;
 		diffFile << "Out1\tOut2\tX\tX_orig" << std::endl ;
@@ -96,20 +95,17 @@ int main(int argc, char* argv[])
 		struct fann *ann ;
 		std::string nn = argv[2];
 		ann = fann_create_from_file(nn.c_str()) ;
+		std::cout << "# Creating the NN from the FANN configuration file...\n" ; 
 
 		std::ofstream diffFile ;
 		diffFile.open("./data/difference_fann.data") ;
-		
-
 
 		std::ofstream classifier_data ;
 		classifier_data.open("./train/jmeint_class.data");
 
 	#endif
 
-// Create the NN
-
-#ifdef NPU_SW
+#ifdef NPU_ANALOG
 	// create the input/output map to get the data
 	std::vector<double> inputData ;
 	std::vector<double> outputData ;
@@ -180,10 +176,8 @@ int main(int argc, char* argv[])
 
 		#ifdef NPU_FANN
 			parrotOut = fann_run(ann, (fann_type*)(xyz + i)) ;
-			//float nn_value = parrotOut[0] + 4.0 * parrotOut[1] ;
 
 			double threshold = 0.00 ;
-			//std::cout << "data: " << parrotOut[0] << std::endl;
 			if(parrotOut[0] > parrotOut[1] )
 			{
 				x = 0 ;
@@ -197,27 +191,10 @@ int main(int argc, char* argv[])
 				xyz + i + 0 * 3, xyz + i + 1 * 3, xyz + i + 2 * 3,
 				xyz + i + 3 * 3, xyz + i + 4 * 3, xyz + i + 5 * 3) ;
 
-			// if(outValue == 0)
-			// {
-			// 	x_orig = 1 ;
-			// }
-			// else
-			// {
-			// 	x_orig = 0 ;
-			// }
 
 			diffFile << xyz + i + 0 * 3 << 
 
 			diffFile << parrotOut[0] << "\t" << parrotOut[1] << "\t" << x_orig << "\t" << x << std::endl ;
-			// if(x!= x_orig)
-			// 	diffFile << "x" ;
-			// else
-			// 	diffFile << "-" ;
-			// diffFile << std::endl ;
-
-			//classifier_data << parrotOut[0] << "\n";
-			//classifier_data << x_orig << "\n";
-
 
 			if(x != x_orig)
 			{
@@ -225,7 +202,7 @@ int main(int argc, char* argv[])
 			}
 
 		#endif
-		#ifdef NPU_SW
+		#ifdef NPU_ANALOG
 
 			inputData.clear() ;
 
@@ -239,7 +216,6 @@ int main(int argc, char* argv[])
 												isNoiseAfter, meanAfter, sigmaAfter) ;
 
 			diffFile << outputData[0] << "\t" ;
-			//diffFile << outputData[1] << "\t" ;
 
 			if(outputData[0] > 0)
 				x = 1 ;
@@ -286,8 +262,12 @@ int main(int argc, char* argv[])
 	xyz = NULL ;
 
 
-	std::cout << "\033[1;31m Miss Rate: " << (double)missRate/(double)totalCount << "\033[0m\n";
-	#ifdef NPU_SW
+	printf("\033[31;1m--------------------\033[0m\n");
+	printf("\033[31;1mError:	%0.2f%% \033[0m\n", ((double)missRate/(double)totalCount * 100));
+	printf("\033[31;1m--------------------\033[0m\n\n");
+	printf("Thank you for using ** npu.bench **...\n\n");
+
+	#ifdef NPU_ANALOG
 		diffFile.close() ;
 	#endif
 	#ifdef NPU_FANN
