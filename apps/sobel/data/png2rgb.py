@@ -1,1 +1,1 @@
-/home/yazdan/phd/benchmarks/npu.bench/scr/png2rgb.py
+../../../scr/png2rgb.py
