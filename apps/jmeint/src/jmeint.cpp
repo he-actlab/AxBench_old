@@ -20,7 +20,7 @@
 
 int main(int argc, char* argv[])
 {
-	int i, j;
+	int i;
 	int x ;
 	int n ;
 
@@ -145,7 +145,7 @@ int main(int argc, char* argv[])
 	int missRate = 0 ;
 	int totalCount = 0 ;
 
-	double output = 0.0;
+	//double output = 0.0;
 
 
 	for(i = 0 ; i < (n * 6 * 3); i += 6 * 3)
@@ -177,7 +177,7 @@ int main(int argc, char* argv[])
 		#ifdef NPU_FANN
 			parrotOut = fann_run(ann, (fann_type*)(xyz + i)) ;
 
-			double threshold = 0.00 ;
+			//double threshold = 0.00 ;
 			if(parrotOut[0] > parrotOut[1] )
 			{
 				x = 0 ;

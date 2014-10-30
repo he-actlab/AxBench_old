@@ -90,7 +90,7 @@ int main ( int argc, const char* argv[])
 		origImagePtr->makeGrayscale( ) ;
 	#endif
 
-	std::cerr << "# The image is converted to GrayScale...\n" << std::endl ;
+	//std::cerr << "# The image is converted to GrayScale...\n" << std::endl ;
 	y = 0 ;
 	
 	// Start performing Sobel operation
