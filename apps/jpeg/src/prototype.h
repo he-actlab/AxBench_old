@@ -1,3 +1,10 @@
+/*
+ * prototype.h
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #ifndef PROTOTYPE_H
 #define PROTOTYPE_H
 

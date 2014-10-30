@@ -1,3 +1,10 @@
+/*
+ * dct.c
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #include "datatype.h"
 
 #include <math.h>
@@ -30,45 +37,6 @@ float C(int u) {
 /* DCT for One block(8x8) */
 void dct (INT16 *data)
 {
-
-
-// #ifdef RANDOM_DATA_COLLECTION
-// 	for(int i = 0 ; i < BLOCK_SIZE; i++)
-// 	{
-// 		fprintf(dct_data, "%f", data[i] / 256.);
-// 		if(i == BLOCK_SIZE - 1)
-// 		{
-// 			fprintf(dct_data, "\n");
-// 		}
-// 		else
-// 		{
-// 			fprintf(dct_data, "\t");
-// 		}
-// 	}
-// #endif
-#if 0
-	float a;
-	int u;
-	int v;
-	int x;
-	int y;
-	int F[8][8];
-
-	for (u = 0; u < 8; u++)
-		for (v = 0; v < 8; v++) {
-			a = 0.0;
-			for (x = 0; x < 8 ; x++)
-				for (y = 0 ; y < 8; y++)
-					a += float(data[x * 8 + y]) *
-						cos((2.0 * float(x) + 1.0) * float(u) * 3.14 / 16.0) *
-						cos((2.0 * float(y) + 1.0) * float(v) * 3.14 / 16.0);
-		F[u][v] = int(0.25 * C(u) * C(v) *a);
-	}
-
-	for (u = 0; u < 8; u++)
-		for (v = 0; v < 8; ++v)
-			data[u * 8 + v] = (INT16)F[u][v];
-#endif //0
 
 	UINT16 i;
 	INT32 x0, x1, x2, x3, x4, x5, x6, x7, x8;
@@ -156,22 +124,4 @@ void dct (INT16 *data)
 
 		data++;
 	}
-
-
-
-
-	// #ifdef RANDOM_DATA_COLLECTION
-	// 	for(int i = 0 ; i < BLOCK_SIZE; i++)
-	// 	{
-	// 		fprintf(dct_data, "%f", data[i]/256.);
-	// 		if(i == BLOCK_SIZE - 1)
-	// 		{
-	// 			fprintf(dct_data, "\n");
-	// 		}
-	// 		else
-	// 		{
-	// 			fprintf(dct_data, "\t");
-	// 		}
-	// 	}
-	// #endif
 }

@@ -1,3 +1,10 @@
+/*
+ * datatype.h
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #ifndef DATATYPE_H
 #define DATATYPE_H
 

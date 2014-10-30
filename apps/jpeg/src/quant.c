@@ -1,3 +1,10 @@
+/*
+ * quant.c
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #include "datatype.h"
 #include "jpegconfig.h"
 #include "quantdata.h"
@@ -90,51 +97,10 @@ void quantization(INT16* const data, UINT16* const quant_table_ptr) {
 	INT16 i;
 	INT32 value;
 
-
-	// #ifdef RANDOM_DATA_COLLECTION
-	// 	for(int i = 0 ; i < BLOCK_SIZE; i++)
-	// 	{
-	// 		fprintf(quantization_data, "%f", data[i]/256.);
-	// 		if(i == BLOCK_SIZE - 1)
-	// 		{
-	// 			fprintf(quantization_data, "\n");
-	// 		}
-	// 		else
-	// 		{
-	// 			fprintf(quantization_data, "\t");
-	// 		}
-
-	// 	}
-
-
-	// 	// Computtation
-
-	// 	for (i = 63; i >= 0; i--) {
-	// 		value = data[i] * quant_table_ptr[i];
-	// 		value = (value + 0x4000) >> 15;
-	// 		Temp[zigzagTable[i]] = (INT16) value;
-	// 	}
-
-	// 	for(int i = 0 ; i < BLOCK_SIZE; i++)
-	// 	{
-	// 		fprintf(quantization_data, "%f", Temp[i]/256.);
-	// 		if(i == BLOCK_SIZE - 1)
-	// 		{
-	// 			fprintf(quantization_data, "\n");
-	// 		}
-	// 		else
-	// 		{
-	// 			fprintf(quantization_data, "\t");
-	// 		}
-
-	// 	}
-	// #else
-
 	for (i = 63; i >= 0; i--) {
 		value = data[i] * quant_table_ptr[i];
 		value = (value + 0x4000) >> 15;
 
 		Temp[zigzagTable[i]] = (INT16) value;
 	}
-	//#endif
 }

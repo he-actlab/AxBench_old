@@ -1,3 +1,10 @@
+/*
+ * quantdata.h
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #ifndef QUANTDATA_H
 #define QUANTDATA_H
 

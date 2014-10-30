@@ -1,3 +1,10 @@
+/*
+ * markdata.h
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #ifndef MARKDATA_H
 #define MARKDATA_H
 

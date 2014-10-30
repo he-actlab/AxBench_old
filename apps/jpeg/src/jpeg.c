@@ -1,3 +1,10 @@
+/*
+ * jpeg.c
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,7 +24,6 @@
 #define OUT_BUFFER_SIZE 500000 // in bytes
 
 
-
 #ifdef RANDOM_DATA_COLLECTION
 	#include "stdio.h"
 	FILE* dct_data ;
@@ -28,7 +34,7 @@ struct fann *ann;
 boost::shared_ptr<anpu::NeuralNetwork> currNeuralNetworkPtr ;
 
 
-#ifdef NPU_SW
+#ifdef NPU_ANALOG
 	int iBits ;
 	int wBits ;
 	ApproxType at ;
@@ -59,10 +65,10 @@ int main (int argc, const char* argv[]) {
 #ifdef NPU_FANN
 	std::string nn = argv[3] ;
 	ann = fann_create_from_file(nn.c_str());
-	printf("NPU_FANN: nn/jpeg.nn\n");
+	printf("# Creating the NN from the FANN configuration file...\n");
 #endif //NPU_FANN
 
-#ifdef NPU_SW
+#ifdef NPU_ANALOG
 	std::string nn = argv[3] ;
 	iBits = atoi(argv[4]) ;
 	wBits = atoi(argv[5]) ;
@@ -74,7 +80,7 @@ int main (int argc, const char* argv[]) {
 		at = FP ;
 
 	anpu::XMLParser currXMLParser(nn, currNeuralNetworkPtr, false) ;
-#endif //NPU_SW
+#endif
 
 	qualityFactor = 1024;
 	imageFormat = GRAY;
@@ -84,8 +90,6 @@ int main (int argc, const char* argv[]) {
 	initRgbImage(&srcImage);
 	if (loadRgbImage(inputFileName, &srcImage) == 0) {
 		printf("Error! Oops: Cannot load the input image!\n");
-
-		//ptlcall_kill();
 		return -1;
 	}
 
@@ -93,25 +97,12 @@ int main (int argc, const char* argv[]) {
 
 	outputBuffer = (UINT8 *) malloc(OUT_BUFFER_SIZE * sizeof(UINT8));
 
-	/* Start the simulation */
-	//ptlcall_switch_to_sim();
-	//ptlcall_single_flush("-snapshot-now");
-	//printf("Starting the simulation ...\n");
-	//printf("The first magic instruction!\n");
-
-	//MAGIC_INST_START;
 
 	outputBufferPtr = outputBuffer;
 	outputBufferPtr = encodeImage(
 		&srcImage, outputBufferPtr, qualityFactor, imageFormat
 	);
 
-	//MAGIC_INST_STOP;
-	//printf("The last magic instruction!\n");
-	//printf("Stopping the simulation!\n");
-	//ptlcall_single_flush("-snapshot-now");
-	//ptlcall_single_flush("-stop");
-	/* Stop the simulation */
 
 	freeRgbImage(&srcImage);
 
@@ -121,8 +112,6 @@ int main (int argc, const char* argv[]) {
 		fclose(fp);
 	}
 	free(outputBuffer);
-
-	//ptlcall_kill();
 	return 0;
 }
 

@@ -1,3 +1,10 @@
+/*
+ * marker.c
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #include "datatype.h"
 #include "jpegconfig.h"
 #include "markdata.h"

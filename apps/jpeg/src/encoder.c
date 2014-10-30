@@ -1,3 +1,10 @@
+/*
+ * encoder.c
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #include "datatype.h"
 #include "jpegconfig.h"
 #include "prototype.h"
@@ -44,21 +51,18 @@ fann_type* parrotOut;
 extern struct fann *ann;
 
 
-
-
-#ifdef NPU_SW
-extern int iBits ;
-extern int wBits ;
-extern ApproxType at ;
-
-
-extern bool isBeforeNoise;
-extern double meanBefore ;
-extern double sigmaBefore ;
-
-extern bool isAfterNoise;
-extern double meanAfter ;
-extern double sigmaAfter;
+#ifdef NPU_ANALOG
+	extern int iBits ;
+	extern int wBits ;
+	extern ApproxType at ;
+	
+	extern bool isBeforeNoise;
+	extern double meanBefore ;
+	extern double sigmaBefore ;
+	
+	extern bool isAfterNoise;
+	extern double meanAfter ;
+	extern double sigmaAfter;
 
 #endif
 
@@ -83,103 +87,17 @@ UINT8* encodeImage(
 	srand(time(NULL));
 
 
+	UINT16 i, j;
+	/* Writing Marker Data */
+	outputBuffer = writeMarkers(outputBuffer, imageFormat, srcImage->w, srcImage->h);
+	for (i = 0; i < srcImage->h; i += 8) {
+		for (j = 0; j < srcImage->w; j += 8) {
+			readMcuFromRgbImage(srcImage, j, i, Y1);
+			/* Encode the data in MCU */
+			outputBuffer = encodeMcu(imageFormat, outputBuffer);
+		}
+	}
 
-// std::cout << "BEFORE" << std::endl ;
-
-
-// 	#ifdef RANDOM_DATA_COLLECTION
-
-// 		std::cout << "WHAT" << std::endl ;
-// 		std::ofstream randomData ;
-// 		randomData.open("./train/jpeg_random.data");
-// 		srand(time(NULL));
-
-// 		randomData << "500000" << std::endl;
-// 		randomData << "64" << std::endl;
-// 		randomData << "64" << std::endl ;
-		
-// 		for(int i = 0 ; i < 500000 ; i++)
-// 		{
-// 			for(int j = 0 ; j < 64 ; j++)
-// 			{
-// 				Y1[j] = rand() % 256 ;
-// 				Y1[j] = Y1[j] - 128 ;
-
-// 				randomData << Y1[j] / 256.0 ;
-
-// 				if(j != 63)
-// 				{
-// 					randomData << " " ;
-// 				}
-// 				else
-// 				{
-// 					randomData << "\n" ;
-// 				}
-// 			}
-
-// 			// Operation
-// 			//levelShift(Y1);
-// 			dct(Y1);
-// 			quantization(Y1, ILqt);
-
-
-
-// 			for(int j = 0 ; j < 64 ; j++)
-// 			{
-
-// 				randomData << Temp[j] / 256.0 ;
-
-// 				if(j != 63)
-// 				{
-// 					randomData << " " ;
-// 				}
-// 				else
-// 				{
-// 					randomData << "\n" ;
-// 				}
-// 			}
-// 		}
-// 		randomData.close() ;
-// 		exit(1) ;
-// 	#endif
-
-	// #ifdef RANDOM_DATA_COLLECTION
-
-	// 	dct_data = fopen("./train/dct.data", "w") ;
-	// 	quantization_data = fopen("./train/quantization.data", "w") ;
-
-	// 	/* Writing Marker Data */
-	// 	outputBuffer = writeMarkers(outputBuffer, imageFormat, srcImage->w, srcImage->h);
-	// 	int i;
-	// 	int j;
-
-	// 	for (i = 0 ; i < MAX_RANDOM ; i++)
-	// 	{
-	// 		for(j = 0 ; j < BLOCK_SIZE ;j++)
-	// 		{
-	// 			Y1[j] = rand() % 256 ;
-	// 		}
-
-	// 		encodeMcu(imageFormat, outputBuffer);
-	// 	}
-	// #else
-		UINT16 i, j;
-		/* Writing Marker Data */
-		outputBuffer = writeMarkers(outputBuffer, imageFormat, srcImage->w, srcImage->h);
-			for (i = 0; i < srcImage->h; i += 8) {
-				for (j = 0; j < srcImage->w; j += 8) {
-					readMcuFromRgbImage(srcImage, j, i, Y1);
-					/* Encode the data in MCU */
-					outputBuffer = encodeMcu(imageFormat, outputBuffer);
-				}
-			}
-	// #endif
-
-
-	// #ifdef RANDOM_DATA_COLLECTION
-	// 	fclose(dct_data);
-	// 	fclose(quantization_data) ;
-	// #endif
 	/* Close Routine */
 	closeBitstream(outputBuffer);
 
@@ -191,163 +109,11 @@ UINT8* encodeMcu(
 	UINT8 *outputBuffer
 ) {
 	
-
-// #ifdef RANDOM_DATA_COLLECTION
-// 	levelShift(Y1);
-// 	dct(Y1);
-// 	quantization(Y1, ILqt);
-// #endif
-#ifdef NPU_NORMAL
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-	// NPU_Q_INST(Y1[0]);
-
-	//MAGIC_INST;
+#ifdef NPU_OBSERVATION
 	levelShift(Y1);
 	dct(Y1);
 	quantization(Y1, ILqt);
-	//MAGIC_INST;
-
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-	// NPU_Q_INST(Temp[0]);
-#endif //NPU_NORMAL
+#endif
 #ifdef NPU_FANN
 	levelShift(Y1);
 	for (int i = 0; i < BLOCK_SIZE; ++i)
@@ -360,11 +126,9 @@ UINT8* encodeMcu(
 
 	for(int i = 8 ; i < BLOCK_SIZE; i++)
 		Temp[i] = 0.0 ;
-#endif //NPU_FANN
+#endif
 
-#ifdef NPU_SW
-
-
+#ifdef NPU_ANALOG
 	levelShift(Y1);
  
 	// create the input/output map to get the data
@@ -386,7 +150,7 @@ UINT8* encodeMcu(
 	for(int i = 4 ; i < BLOCK_SIZE; i++)
 		Temp[i] = 0.0 ;
 
-#endif //NPU_SW
+#endif
 
 	outputBuffer = huffman(1, outputBuffer);
 

@@ -1,8 +1,8 @@
 /*
  * rgbimage.h
- *
- *  Created on: May 1, 2012
- *      Author: Hadi Esmaeilzadeh <hadianeh@cs.washington.edu>
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
 
 #ifndef RGB_IMAGE_H_

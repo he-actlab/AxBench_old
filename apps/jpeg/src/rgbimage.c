@@ -1,8 +1,8 @@
 /*
- * rgb_image.c
- *
- *  Created on: May 1, 2012
- *      Author: Hadi Esmaeilzadeh <hadianeh@cs.washington.edu>
+ * rgbimage.c
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
 
 #include "rgbimage.h"
@@ -54,7 +54,7 @@ int loadRgbImage(const char* fileName, RgbImage* image) {
 	RgbPixel** pixels;
 	FILE *fp;
 
-	printf("Loading %s ...\n", fileName);
+	//printf("Loading %s ...\n", fileName);
 
 	fp = fopen(fileName, "r");
 	if (!fp) {
@@ -67,7 +67,7 @@ int loadRgbImage(const char* fileName, RgbImage* image) {
 	c = readCell(fp, w);
 	image->h = atoi(w);
 
-	printf("%d x %d\n", image->w, image->h);
+	//printf("%d x %d\n", image->w, image->h);
 
 	pixels = (RgbPixel**)malloc(image->h * sizeof(RgbPixel*));
 
@@ -130,11 +130,11 @@ int loadRgbImage(const char* fileName, RgbImage* image) {
 	}
 	strcpy(image->meta, w);
 
-	printf("%s\n", image->meta);
+	//printf("%s\n", image->meta);
 
 	image->w = (image->w / 8) * 8;
 	image->h = (image->h / 8) * 8;
-	printf("w=%d x h=%d\n", image->w, image->h);
+	//printf("w=%d x h=%d\n", image->w, image->h);
 
 	return 1;
 }
@@ -144,7 +144,7 @@ int saveRgbImage(RgbImage* image, const char* fileName, float scale) {
 	int j;
 	FILE *fp;
 
-	printf("Saving %s ...\n", fileName);
+	//printf("Saving %s ...\n", fileName);
 
 	fp = fopen(fileName, "w");
 	if (!fp) {
@@ -153,7 +153,7 @@ int saveRgbImage(RgbImage* image, const char* fileName, float scale) {
 	}
 
 	fprintf(fp, "%d,%d\n", image->w, image->h);
-	printf("%d,%d\n", image->w, image->h);
+	//printf("%d,%d\n", image->w, image->h);
 
 	for(i = 0; i < image->h; i++) {
 		for(j = 0; j < (image->w - 1); j++) {
@@ -163,7 +163,7 @@ int saveRgbImage(RgbImage* image, const char* fileName, float scale) {
 	}
 
 	fprintf(fp, "%s", image->meta);
-	printf("%s\n", image->meta);
+	//printf("%s\n", image->meta);
 
 	fclose(fp);
 
