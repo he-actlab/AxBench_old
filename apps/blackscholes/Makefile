@@ -7,6 +7,8 @@ TARGET  = blackscholes_$(NPU_MODE).out
 M4_BASE = .
 MACROS  = c.m4.pthreads
 
+include ../../config.mk
+
 
 SRC	= src/blackscholes.c
 
@@ -34,11 +36,13 @@ endif
 
 CXXFLAGS += $(NCO) $(FUNC) $(ERR) $(CSRC)
 
-CFLAGS		:= -Wall -lfann -lbackprop -lboost_regex -std=c++11 -O0 -MD
+CFLAGS		:= -Wall -Wnarrowing -lfann -lbackprop -lboost_regex -std=c++11 -O0 -MD
 LDFLAGS		:= -lfann -lbackprop -lboost_regex
 
-INCLUDE 	:= -I../../anpu.compiler/src -I/filespace/people/y/yazdanbakhsh/FANN/bin/include
-LIB			:= -L../../anpu.compiler/lib -L/filespace/people/y/yazdanbakhsh/FANN/bin/lib
+INCLUDE 	:= -I${ANALOG_INC} -I${FANN_INC}
+LIB			:= -L${ANALOG_LIB} -L${FANN_LIB}
+
+
 
 all: $(TARGET)
 

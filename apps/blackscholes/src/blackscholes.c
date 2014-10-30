@@ -24,7 +24,7 @@ fann_type* parrotOut ;
 #endif
 
 
-#ifdef NPU_SW
+#ifdef NPU_ANALOG
 #include "neuralnetwork.hpp"
 #include "xml_parser.hpp"
 boost::shared_ptr<anpu::NeuralNetwork> currNeuralNetworkPtr ;
@@ -164,8 +164,8 @@ fptype BlkSchlsEqEuroNoDiv( fptype sptprice,
     fptype OptionPrice;
 
     // local private working variables for the calculation
-    fptype xStockPrice;
-    fptype xStrikePrice;
+    //fptype xStockPrice;
+    //fptype xStrikePrice;
     fptype xRiskFreeRate;
     fptype xVolatility;
     fptype xTime;
@@ -185,8 +185,8 @@ fptype BlkSchlsEqEuroNoDiv( fptype sptprice,
     fptype NegNofXd1;
     fptype NegNofXd2;  
     
-    xStockPrice = sptprice;
-    xStrikePrice = strike;
+    //xStockPrice = sptprice;
+    //xStrikePrice = strike;
     xRiskFreeRate = rate;
     xVolatility = volatility;
     xTime = time;
@@ -250,21 +250,21 @@ double normalize(double in, double min, double max, double min_new, double max_n
 
 int bs_thread(void *tid_ptr) {
     int i, j;
-    fptype price0, price1;
-    fptype priceDelta;
+    //fptype price0, price1;
+    //fptype priceDelta;
     int tid = *(int *)tid_ptr;
     int start = tid * (numOptions);
     int end = start + (numOptions);
 
-    printf("%d\n", (end-start) * NUM_RUNS);
-    printf("%d\n", 6);
-    printf("%d\n", 1);
+    //printf("%d\n", (end-start) * NUM_RUNS);
+    //printf("%d\n", 6);
+    //printf("%d\n", 1);
 
 
 
-    #ifdef NPU_SW
+    #ifdef NPU_ANALOG
         std::ofstream sw_diff ;
-        sw_diff.open("./data/npu_sw_diff.data");
+        sw_diff.open("./data/npu_analog_diff.data");
         sw_diff << "Price_Orig\tPriceBlackscholes\tPrice_NN\n";
         int count_error = 0;
     #endif
@@ -272,6 +272,7 @@ int bs_thread(void *tid_ptr) {
     #ifdef NPU_FANN
         std::ofstream fann_diff ;
         fann_diff.open("./data/npu_fann_diff.data") ;
+        printf("# Creating the NN from the FANN configuration file...\n");
         fann_diff << "Price_Orig\tPriceBlackscholes\tPrice_NN\n";
     #endif
 
@@ -292,7 +293,7 @@ int count_nn_total  = 0;
             /* Calling main function to calculate option value based on 
              * Black & Scholes's equation.
              */
-             #ifdef NPU_SW
+             #ifdef NPU_ANALOG
                 std::vector<double> inputData ;
                 std::vector<double> outputData ;
                 fptype price_orig, price_nn ;
@@ -333,7 +334,7 @@ int count_nn_total  = 0;
 
                 fptype N1,  N2 ;
 
-                fptype price_0, price_1;
+                //fptype price_0, price_1;
 
                 price_orig = BlkSchlsEqEuroNoDiv( sptprice[i], strike[i],
                                          rate[i], volatility[i], otime[i], 
@@ -348,16 +349,16 @@ int count_nn_total  = 0;
                 // }
 
 
-                fptype bs_type = 0.0 ;
+                // fptype bs_type = 0.0 ;
 
-                if(otype[i] == 0.0)
-                {
-                    bs_type = -1.0;
-                }
-                else
-                {
-                    bs_type = 1.0;
-                }
+                // if(otype[i] == 0.0)
+                // {
+                //     bs_type = -1.0;
+                // }
+                // else
+                // {
+                //     bs_type = 1.0;
+                // }
 
 
                 fptype datain[6] = {    sptprice[i],
@@ -365,7 +366,7 @@ int count_nn_total  = 0;
                                         rate[i],
                                         volatility[i],
                                         otime[i],
-                                        otype[i]
+                                        (float)otype[i]
                                     } ;
 
                 parrotOut = fann_run(ann, (fann_type*)datain) ;
@@ -379,43 +380,6 @@ int count_nn_total  = 0;
                
                 count_nn_total++;
 
-                // fptype datain1[6] = {    sptprice[i],
-                //                         strike[i],
-                //                         rate[i],
-                //                         volatility[i],
-                //                         otime[i],
-                //                         1.0
-                //                     } ;
-
-                // parrotOut = fann_run(ann, (fann_type*)datain1) ;
-                // price_1 = parrotOut[0];
-
-                // fptype FutureValueX = strike[i] * ( exp( -(rate[i])*(otime[i]) ) );
-
-
-                // if(otype[i] == 0)
-                // {
-                //     if(price_0 * DIVIDE > 0.5)
-                //     {
-                //         price_nn = price_0 ;
-                //     }
-                //     else
-                //     {
-                //         price_nn = price_1 - FutureValueX + sptprice[i];
-                //     }
-                // }
-
-                // else
-                // {
-                //     if(price_1 * DIVIDE > 0.5)
-                //     {
-                //         price_nn = price_1 ;
-                //     }
-                //     else
-                //     {
-                //         price_nn = FutureValueX - sptprice[i] + price_0 ;
-                //     }
-                // }
 
                 fann_diff << data[i].DGrefval << "\t" ;
                 fann_diff << price_orig * DIVIDE << "\t";
@@ -446,22 +410,6 @@ int count_nn_total  = 0;
 
                     
                 fann_observation << std::setprecision(8) << price  << std::endl ;
-                
-                // if(price *  DIVIDE < 0.8)
-                // {
-                //     fann_observation << std::setprecision(8) << price << " " << std::setprecision(8) << price << std::endl ;
-                // }
-                // else
-                // {
-                //     fann_observation << std::setprecision(8) << price << " " << std::setprecision(8) << "0.01" << std::endl;
-                // }
-
-                // if(price * DIVIDE > 0.5)
-                //     fann_observation << std::setprecision(8) << price << std::endl;
-                // else
-                //     fann_observation << std::setprecision(8) << 0.2 << std::endl;
-
-                //fann_observation << std::setprecision(8) << price0 << " " << std::setprecision(8) << price1 << std::endl;
 
                 prices[i] = price;
 
@@ -476,7 +424,7 @@ int count_nn_total  = 0;
                 numError ++;
             }
         #endif
-        #ifdef NPU_SW
+        #ifdef NPU_ANALOG
             priceDelta = data[i].DGrefval - price_orig * (double)data[i].strike ;
             if( fabs(priceDelta) >= 1e-4 ){
                 printf("Error on %d. Computed=%.5f, Ref=%.5f, Delta=%.5f\n",
@@ -489,7 +437,7 @@ int count_nn_total  = 0;
     }
 
 
-    #ifdef NPU_SW
+    #ifdef NPU_ANALOG
         sw_diff.close();
     #endif
 
@@ -531,7 +479,7 @@ int main (int argc, char **argv)
     char *inputFile = argv[1];
     char *outputFile = argv[2];
 
-    #ifdef NPU_SW
+    #ifdef NPU_ANALOG
         std::string nn_name = argv[3] ;
         iBits = atoi(argv[4]) ;
         wBits = atoi(argv[5]) ;
@@ -585,8 +533,8 @@ int main (int argc, char **argv)
       exit(1);
     }
 
-    printf("Num of Options: %d\n", numOptions);
-    printf("Num of Runs: %d\n", NUM_RUNS);
+    //printf("Num of Options: %d\n", numOptions);
+    //printf("Num of Runs: %d\n", NUM_RUNS);
 
 #define PAD 256
 #define LINESIZE 64
@@ -708,7 +656,7 @@ int main (int argc, char **argv)
 
 
 
-    printf("Size of data: %d\n", numOptions * (sizeof(OptionData) + sizeof(int)));
+    //printf("Size of data: %d\n", numOptions * (sizeof(OptionData) + sizeof(int)));
 
     //serial version
     int tid=0;
@@ -741,9 +689,9 @@ int main (int argc, char **argv)
       exit(1);
     }
 
-#ifdef ERR_CHK
-    printf("Num Errors: %d\n", numError);
-#endif
+// #ifdef ERR_CHK
+//     printf("Num Errors: %d\n", numError);
+// #endif
     free(data);
     free(prices);
 

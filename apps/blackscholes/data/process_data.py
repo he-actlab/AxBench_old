@@ -5,7 +5,7 @@ import math
 import sys
 
 filename = sys.argv[1]
-print("Filename is: " + filename)
+#print("Filename is: " + filename)
 
 fh = open(filename)
 
@@ -29,7 +29,7 @@ for line in fh:
 	# print price_appx
 	#raw_input()
 
-print "Size:" + str(len(price_orig))
+#print "Size:" + str(len(price_orig))
 
 
 
@@ -57,77 +57,11 @@ for i in range(len(price_orig)):
 		relativeError = abs(price_orig[i]-price_appx[i]) / abs(price_orig[i])
 		absError += relativeError
 		count=count+1
-print "----------- Original Prices -------------------"
-print "# Total item:             " + str(len(price_orig))
-print "# Total Relative Error:   " + str(absError)
-print "# Average Relative Error: " + str(absError/count)
-print "# Threshold:              " + str(countOverThreshold/count)
+#print "----------- Original Prices -------------------"
+#print "# Total item:             " + str(len(price_orig))
+#print "# Total Relative Error:   " + str(absError)
+print "Error: " + (str(round(absError/count*100,2))) + "%"
 
 
-
-# absError = 0
-# count = 0
-# countOne = 0
-
-# for i in range(len(price_threshold)):
-# 	if(price_orig[i] != 0):
-# 		relativeError = abs(price_orig[i]-price_threshold[i]) / abs(price_orig[i])
-# 		absError += relativeError
-# 		if(relativeError >= 1):
-# 			countOne = countOne + 1
-# 		count=count+1
-
-# print "----------- After Thereshold Prices -------------------"
-# print "# Total item:             " + str(len(price_threshold))
-# print "# Total Relative Error:   " + str(absError)
-# print "# Average Relative Error: " + str(absError/count)
-# print "# Error GEQ One:          " + str(countOne)
-
-
-
-# absError = 0
-# count = 0
-# excludedItems = 0
-# pricelessthanOne = 0
-
-# threshold=10e-1
-# countMoreThereshold=0
-
-# relativeErrorArray = []
-
-
-# for i in range(len(price_threshold)):
-# 	if(price_orig[i] != 0):
-# 		relativeError = abs(price_orig[i]-price_threshold[i]) / abs(price_orig[i])
-
-# 		if(relativeError < 1):
-# 			count = count + 1
-# 			absError += relativeError
-# 			relativeErrorArray.append(relativeError)
-# 			if(abs(price_orig[i]-price_threshold[i]) > threshold):
-# 				countMoreThereshold = countMoreThereshold + 1
-# 		else:
-# 			#print price_threshold[i]
-# 			if(price_orig[i] < 2):
-# 				pricelessthanOne = pricelessthanOne + 1
-# 			excludedItems = excludedItems + 1
-
-# averageError = sum(relativeErrorArray)/float(len(relativeErrorArray))
-# deviation = 0
-# for i in relativeErrorArray:
-# 	deviation += (i - averageError) * (i - averageError)
-
-
-
-
-# print "----------- Exclude High Errors -------------------"
-# print "# Total item:             " + str(len(price_threshold))
-# print "# Total Relative Error:   " + str(absError)
-# print "# Average Relative Error: " + str(absError/count)
-# print "# Excluded Errors:        " + str(excludedItems)
-# print "# Exclude Percentage:     " + str(excludedItems/float(len(price_threshold)))
-# print "# Price less than one:    " + str(pricelessthanOne)
-# print "# More than threshold:    " + str(countMoreThereshold)
-# print "# Error deviation:        " + str(math.sqrt(deviation/float(len(relativeErrorArray))))
 
 
