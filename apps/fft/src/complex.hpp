@@ -1,3 +1,10 @@
+/*
+ * complex.hpp
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 #ifndef __COMPLEX_HPP__
 #define __COMPLEX_HPP__
 

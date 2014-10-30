@@ -1,3 +1,10 @@
+/*
+ * fourier.cpp
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
+
 
 #include "fourier.hpp"
 #include <cmath>
@@ -9,20 +16,20 @@
 
 
 #ifdef NPU_OBSERVATION
-extern std::ofstream fft_dataFile ;
+	extern std::ofstream fft_dataFile ;
 #endif
 
 #ifdef NPU_FANN
-#include "floatfann.h"
-extern struct fann *ann ;
-fann_type* parrotOut ;
-#endif //NPU_FANN
+	#include "floatfann.h"
+	extern struct fann *ann ;
+	fann_type* parrotOut ;
+#endif
 
-#ifdef NPU_SW
-extern boost::shared_ptr<anpu::NeuralNetwork> currNeuralNetworkPtr ;
-extern ApproxType at ;
-extern int iBits ;
-extern int wBits ;
+#ifdef NPU_ANALOG
+	extern boost::shared_ptr<anpu::NeuralNetwork> currNeuralNetworkPtr ;
+	extern ApproxType at ;
+	extern int iBits ;
+	extern int wBits ;
 #endif
 
 void calcFftIndices(int K, int* indices)
@@ -54,9 +61,9 @@ void radix2DitCooleyTykeyFft(int K, int* indices, Complex* x, Complex* f, Comple
 	int oI ;
 
 	#ifndef NPU_OBSERVATION
-	float fftSin ;
-	float fftCos ;
-	Complex t ;
+		float fftSin ;
+		float fftCos ;
+		Complex t ;
 	#endif
 
 	float fftSin_orig ;
@@ -73,7 +80,7 @@ void radix2DitCooleyTykeyFft(int K, int* indices, Complex* x, Complex* f, Comple
 	std::vector<double> outputData ;
 
 
-	#ifdef NPU_SW
+	#ifdef NPU_ANALOG
 		std::ofstream differenceFile ;
 		differenceFile.open("./data/sw_difference.data") ;
 		differenceFile << "IN\tFFT_SIN_NN\tFFT_SIN\tFFT_COS_NN\tFFT_COS\n" ;			
@@ -84,9 +91,6 @@ void radix2DitCooleyTykeyFft(int K, int* indices, Complex* x, Complex* f, Comple
 		differenceFile.open("./data/fann_difference.data") ;
 		differenceFile << "IN\tFFT_SIN_NN\tFFT_SIN\tFFT_COS_NN\tFFT_COS\n" ;
 	#endif
-
-
-
 
 	for(i = 0, N = 1 << (i + 1); N <= K ; i++, N = 1 << (i + 1))
 	{
@@ -99,24 +103,14 @@ void radix2DitCooleyTykeyFft(int K, int* indices, Complex* x, Complex* f, Comple
 				eI = j + k ; 
 				oI = j + step + k ;
 
-				#ifdef NPU_SW
+				#ifdef NPU_ANALOG
 					// Initialize input / output neurons
 					inputData.clear() ;
 					inputData.push_back(arg) ;
 					
 					currNeuralNetworkPtr->runNeuralNetwork(inputData, outputData, iBits, wBits, at) ;
 					fftSin = outputData[0] ;
-					fftCos = outputData[1] ;
-
-					// if(arg == 0.25)
-					// {
-					// 	std::cout << "Arg: " << arg << std::endl ;
-					// 	std::cout << outputData[0] << ", " << outputData[1] << std::endl;
-					// 	currNeuralNetworkPtr->printNeuralNetwork();
-					// 	std::string line ;
-					// 	std::getline(std::cin, line);
-					// }
-					
+					fftCos = outputData[1] ;					
 
 					fftSinCos(arg, &fftSin_orig, &fftCos_orig) ;
 
@@ -126,32 +120,7 @@ void radix2DitCooleyTykeyFft(int K, int* indices, Complex* x, Complex* f, Comple
 				#endif
 
 				#ifdef NPU_FANN
-
-
-
-						// if(arg == 0.25)
-						// {
-						// 	std::cout << arg << std::endl ;	
-						// 	std::string temp_line;
-						// 	std::getline(std::cin, temp_line) ;
-						// }
 						parrotOut = fann_run(ann, &arg) ;
-						// if(arg == 0.25)
-						// {
-						// 	std::string temp_line;
-						// 	std::getline(std::cin, temp_line) ;
-						// }
-						
-
-						//fann_print_parameters(ann);
-						
-						// std::cout << parrotOut[0] << std::endl;
-						// std::cout << parrotOut[1] << std::endl;
-						//std::string temp_line;
-						//if(arg != 0)
-							//std::getline(std::cin, temp_line) ;
-
-
 
 						fftSin = parrotOut[0] ;
 						fftCos = parrotOut[1] ;
@@ -160,7 +129,7 @@ void radix2DitCooleyTykeyFft(int K, int* indices, Complex* x, Complex* f, Comple
 						differenceFile << arg << "\t" ;
 						differenceFile << fftSin << "\t" << fftSin_orig << "\t" ;
 						differenceFile << fftCos << "\t" << fftCos_orig << "\n" ;
-				#endif // NPU_FANN
+				#endif
 
 				#ifdef NPU_OBSERVATION
 					fftSinCos(arg, &fftSin_orig, &fftCos_orig) ;
@@ -179,8 +148,6 @@ void radix2DitCooleyTykeyFft(int K, int* indices, Complex* x, Complex* f, Comple
                 x_orig[indices[oI]].imag = t_orig.imag - (x_orig[indices[oI]].imag * fftCos_orig + x_orig[indices[oI]].real * fftSin_orig);
 
 
-
-
                 #ifndef NPU_OBSERVATION
                 	t =  x[indices[eI]] ;
 					x[indices[eI]].real = t.real + (x[indices[oI]].real * fftCos - x[indices[oI]].imag * fftSin);
@@ -194,7 +161,7 @@ void radix2DitCooleyTykeyFft(int K, int* indices, Complex* x, Complex* f, Comple
 	}
 
 
-	#ifdef NPU_SW
+	#ifdef NPU_ANALOG
 		differenceFile.close() ;
 	#endif
 
@@ -203,7 +170,7 @@ void radix2DitCooleyTykeyFft(int K, int* indices, Complex* x, Complex* f, Comple
 	#endif
 
 	#ifdef NPU_OBSERVATION
-	fft_dataFile.close() ;
+		fft_dataFile.close() ;
 	#endif
 
 

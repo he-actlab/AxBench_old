@@ -1,3 +1,9 @@
+/*
+ * fft.cpp
+ * 
+ * Created on: Sep 9, 2013
+ * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
+ */
 #include <cstdio>
 #include <iostream>
 #include "fourier.hpp"
@@ -8,18 +14,18 @@
 
 
 #ifdef NPU_OBSERVATION
-std::ofstream fft_dataFile;
+	std::ofstream fft_dataFile;
 #endif
 
 
 #ifdef NPU_OBSERVATION
-#define MAX_K ((1 << 11))
-#endif
-#ifdef NPU_SW
-#define MAX_K ((1 << 20))
-#endif
-#ifdef NPU_FANN
-#define MAX_K ((1 << 15))
+	#define MAX_K ((1 << 11))
+	#endif
+	#ifdef NPU_ANALOG
+	#define MAX_K ((1 << 15))
+	#endif
+	#ifdef NPU_FANN
+	#define MAX_K ((1 << 15))
 #endif
 
 static int indices[MAX_K];
@@ -31,23 +37,20 @@ static Complex f[MAX_K] ;
 
 
 #ifdef NPU_FANN
-#include "floatfann.h"
-struct fann *ann ;
-#endif //NPU_FANN
+	#include "floatfann.h"
+	struct fann *ann ;
+#endif
 
-#ifdef NPU_SW
-boost::shared_ptr<anpu::NeuralNetwork> currNeuralNetworkPtr ;
-ApproxType at ;
-int iBits ;
-int wBits ;
-
+#ifdef NPU_ANALOG
+	boost::shared_ptr<anpu::NeuralNetwork> currNeuralNetworkPtr ;
+	ApproxType at ;
+	int iBits ;
+	int wBits ;
 #endif
 
 
 int main(int argc, char* argv[])
 {
-
-
 	int i ;
 
 	int K = MAX_K;
@@ -66,8 +69,6 @@ int main(int argc, char* argv[])
 		std::cout << "# Creating the NN from the FANN configuration file...\n" ; 
 	#endif // NPU_FANN
 
-
-	//#ifdef NPU_OBSERVATION
 	for(i = 0 ;i < K ; i++)
 	{
 		x[i].real = i;
@@ -76,38 +77,12 @@ int main(int argc, char* argv[])
 		x_orig[i].real =  i;
 		x_orig[i].imag = 0;
 	}
-	//#endif
 
-	// #ifdef NPU_FANN
-	// 	std::ifstream data("./train/fft.data");
-	// 	int number;
-	// 	data >> number;
-	// 	std::cout << "Total number of data: " << number << std::endl;
-	// 	int in, out;
-	// 	data >> in;
-	// 	data >> out;
-	// 	std::cout << "Number of input: 	" << in << std::endl;
-	// 	std::cout << "Number of output: " << out << std::endl;
-	// 	float real;
-	// 	int K= number;
-	// 	for(int j = 0; j < number; j++)
-	// 	{
-	// 		data >> real;
-	// 		x[j].real = real;
-	// 		x[j].imag = 0;
-	// 		x_orig[j].real = real;
-	// 		x_orig[j].imag = 0;
-	// 	}
-
-	// #endif 
-
-	#ifdef NPU_SW
+	#ifdef NPU_ANALOG
 		std::string nn = argv[1] ;
 		iBits	   = atoi(argv[2]) ;
 		wBits      = atoi(argv[3]) ;
 		int isFp   = atoi(argv[4]) ;
-
-
 
 		if (isFp == 0)
 		{
@@ -139,18 +114,6 @@ int main(int argc, char* argv[])
 	    	float norm_nominator 	= sqrt((diff_real*diff_real) + (diff_imag*diff_imag));
 	    	float norm_denominator 	= sqrt((f_orig[i].real*f_orig[i].real) + (f_orig[i].imag*f_orig[i].imag));
 
-
-
-	    	//float norm_orig = sqrt((f_orig[i].real * f_orig[i].real) + (f_orig[i].imag * f_orig[i].imag));
-	    	//float norm_appx = sqrt((f[i].real * f[i].real) + (f[i].imag * f[i].imag));
-
-	    	//e += abs((norm_orig - norm_appx) / (norm_orig));
-
-	    	//std::cout << norm_orig << std::endl;
-
-	    	//e = (f[i].real - f_orig[i].real) * (f[i].real - f_orig[i].real);
-	    	//e += (f[i].imag - f_orig[i].imag) * (f[i].imag - f_orig[i].imag);
-
 	    	if(norm_denominator == 0)
 	    	{
 	    		e += 1.0;
@@ -165,10 +128,13 @@ int main(int argc, char* argv[])
 	    	}
 	    	count++;
 	    }
-	    printf("Count:					\t\t%d\n", count);
-	    printf("Total Error:			\t\t%f\n", e);
-	    e = e / (float)count;
-	    printf("Average Relative Error:	\t\t%f\n", e);
+	    //printf("Count:					\t\t%d\n", count);
+	    //printf("Total Error:			\t\t%f\n", e);
+	    e = 100.0 * (e / (float)count);
+	    printf("\033[31;1m--------------------\033[0m\n");
+	    printf("\033[31;1mError:	%0.2f%% \033[0m\n", e);
+	    printf("\033[31;1m--------------------\033[0m\n\n");
+	    printf("Thank you for using ** npu.bench **...\n\n");
     #endif
 
 	return 0 ;
