@@ -1,3 +1,9 @@
+/*
+ * kinematics.cpp
+ * 
+ *  Created on: Sep. 10 2013
+ *			Author: Amir Yazdanbakhsh <yazdanbakhsh@wisc.edu>
+ */
 
 #include <cmath>
 #include "kinematics.hpp"

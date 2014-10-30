@@ -2,10 +2,7 @@ NPU_MODE	:= NPU_SW
 CC			:= g++
 LD			:= g++
 
-FANN_INC	:= /filespace/people/y/yazdanbakhsh/FANN/bin/include
-FANN_LIB	:= /filespace/people/y/yazdanbakhsh/FANN/bin/lib
-ANALOG_INC	:= ../../anpu.compiler/src
-ANALOG_LIB	:= ../../anpu.compiler/lib
+include ../../config.mk
 
 CFLAGS		:= -Wall -lfann -lbackprop -lboost_regex -std=c++11
 LFLAGS		:= -lfann -lbackprop -lboost_regex

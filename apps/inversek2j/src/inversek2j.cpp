@@ -1,4 +1,9 @@
-
+/*
+ * inversek2j.cpp
+ * 
+ *  Created on: Sep. 10 2013
+ *			Author: Amir Yazdanbakhsh <yazdanbakhsh@wisc.edu>
+ */
 
 #include <iostream>
 #include <cstdlib>
@@ -25,9 +30,7 @@ int main(int argc, const char* argv[])
 		n = atoi(argv[1]) ;
 	#endif
 
-
-
-	#ifdef NPU_SW
+	#ifdef NPU_ANALOG
 		std::string nn_name = argv[2] ;
 		std::ofstream diffFile ;
 		diffFile.open("./data/sw_difference.data");
@@ -59,18 +62,14 @@ int main(int argc, const char* argv[])
 		diffFile.open("./data/fann_difference.data");
 		diffFile.precision(8);
 
-		
-
 		diffFile << "In1\tIn2\tOut1\tOut1_Orig\tOut2\tOut2_Orig\n" ;
 
 		ann = fann_create_from_file(nn_name.c_str()) ;
 		std::cout << "# Creating the NN from the FANN configuration file...\n" ;
-	#endif //NPU_FANN
-
-
+	#endif
 
 	// Create the NN
-	#ifdef NPU_SW
+	#ifdef NPU_ANALOG
 		std::vector<double> inputData ;
 		std::vector<double> outputData ;
 
@@ -85,14 +84,14 @@ int main(int argc, const char* argv[])
 		std::ifstream data("./data/inversek2j.data");
 		int number;
 		data >> number;
-		std::cout << "Total number of inputs: " << number << std::endl;
+		//std::cout << "Total number of inputs: " << number << std::endl;
 		n = number;
 
 		int in, out;
 		data >> in;
 		data >> out;
-		std::cout << "Number of inputs: 	" << in 	<< std::endl;
-		std::cout << "Number of outputs:	" << out 	<< std::endl;
+		//std::cout << "Number of inputs: 	" << in 	<< std::endl;
+		//std::cout << "Number of outputs:	" << out 	<< std::endl;
 
 		float in_data1, in_data2;
 		float out_data1, out_data2;
@@ -100,7 +99,7 @@ int main(int argc, const char* argv[])
 
 
 	// Number of iteration
-	std::cout << "# Number of iterations: " << n << std::endl ;
+	//std::cout << "# Number of iterations: " << n << std::endl ;
 
 	float* t1t2xy = (float*)malloc(n * 2 * 2 * sizeof(float)) ;
 
@@ -170,8 +169,6 @@ int main(int argc, const char* argv[])
 
 
 		#ifdef NPU_OBSERVATION
-
-			
 			float x = t1t2xy[i+2] ;
 			float y = t1t2xy[i+3] ;
 
@@ -209,7 +206,7 @@ int main(int argc, const char* argv[])
 			inversek2j(t1t2xy[i + 2], t1t2xy[i + 3], t1t2xy + (i + 0), t1t2xy + (i + 1)) ;
 		#endif
 
-		#ifdef NPU_SW
+		#ifdef NPU_ANALOG
 			// Initialize input / output neurons
 			inputData.clear() ;
 			inputData.push_back(t1t2xy[i + 2]) ;
@@ -261,24 +258,6 @@ int main(int argc, const char* argv[])
 				e = 1;
 			else
 				e = nominator / denominator;
-
-
-
-
-			// e = fabs(out1 - t1t2xy[i+0]) + fabs(out2 - t1t2xy[i + 1]) ;
-			// //printf("e: %f\n", e);
-			// double denominator = fabs(out1 + out2) ;
-			// if(isnan(e))
-			// 	continue;
-			// if(denominator == 0)
-			// {
-			// 	e = 0 ;
-			// }
-			// else
-			// {
-			// 	e /= denominator ;
-			// 	count++;
-			// }
 			count++;
 			absError += e;
 		#endif
@@ -291,7 +270,7 @@ int main(int argc, const char* argv[])
 		#endif
 
 
-		#ifdef NPU_SW
+		#ifdef NPU_ANALOG
 			e = fabs(out1 - t1t2xy[i+0]) + fabs(out2 - t1t2xy[i + 1]) ;
 			printf("e: %f\n", e);
 			double denominator = fabs(out1 + out2) ;
@@ -308,14 +287,14 @@ int main(int argc, const char* argv[])
 			}
 
 			absError += e;
-
-			//printf("absError: %f\n", absError);
 		#endif
 	}
 
-	absError = absError / (double) count ;
-	printf("count: %d\n", count);
-	printf("absError: %f\n", absError);
+	absError = (absError / (double) count) * 100.0 ;
+	printf("\033[31;1m--------------------\033[0m\n");
+	printf("\033[31;1mError:	%0.2f%% \033[0m\n", absError);
+	printf("\033[31;1m--------------------\033[0m\n\n");
+	printf("Thank you for using ** npu.bench **...\n\n");
 
 	#ifdef NPU_VALIDATION
 		std::cout << "##################################################" << std::endl ;
@@ -324,7 +303,7 @@ int main(int argc, const char* argv[])
 	free(t1t2xy) ; 
 	t1t2xy = NULL ;
 
-	#ifdef NPU_SW
+	#ifdef NPU_ANALOG
 		diffFile.close() ;
 	#endif
 	#ifdef NPU_FANN
