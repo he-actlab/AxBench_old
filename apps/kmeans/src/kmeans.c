@@ -50,7 +50,7 @@ int main (int argc, const char* argv[]) {
 
 #ifdef NPU_FANN
 	ann = fann_create_from_file(argv[2]);
-	printf("# Creating the NN from the FANN configuration file...");
+	printf("# Creating the NN from the FANN configuration file...\n");
 #endif
 
 #ifdef NPU_ANALOG
