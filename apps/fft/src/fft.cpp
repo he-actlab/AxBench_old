@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 	int K = MAX_K;
 
 	#ifdef NPU_OBSERVATION
-		fft_dataFile.open("./train/fft.data");
+		fft_dataFile.open("./data/fft_observation.data");
 		fft_dataFile.precision(8) ;
 		fft_dataFile << K << std::endl ;
 		fft_dataFile << "1" << "\n" ;
@@ -134,8 +134,9 @@ int main(int argc, char* argv[])
 	    printf("\033[31;1m--------------------\033[0m\n");
 	    printf("\033[31;1mError:	%0.2f%% \033[0m\n", e);
 	    printf("\033[31;1m--------------------\033[0m\n\n");
-	    printf("Thank you for using ** npu.bench **...\n\n");
-    #endif
+	    #endif
+	    printf("\033[37;1m\nThank you for using ** AxBench **...\033[0m\n\n");
+    
 
 	return 0 ;
 }

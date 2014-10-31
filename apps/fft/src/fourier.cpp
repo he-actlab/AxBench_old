@@ -135,7 +135,7 @@ void radix2DitCooleyTykeyFft(int K, int* indices, Complex* x, Complex* f, Comple
 					fftSinCos(arg, &fftSin_orig, &fftCos_orig) ;
 					fft_dataFile << arg << std::endl ;
 					fft_dataFile << fftSin_orig << " " << fftCos_orig << std::endl ;
-					std::cout << "Arg: " << arg << ", Sin: " << fftSin_orig << ", Cos: " << fftCos_orig << std::endl ;
+					//std::cout << "Arg: " << arg << ", Sin: " << fftSin_orig << ", Cos: " << fftCos_orig << std::endl ;
 				#endif
 
 
