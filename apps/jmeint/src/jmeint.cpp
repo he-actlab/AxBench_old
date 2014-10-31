@@ -268,7 +268,7 @@ int main(int argc, char* argv[])
 
 	#ifndef NPU_OBSERVATION
 	printf("\033[31;1m--------------------\033[0m\n");
-	printf("\033[31;1mError:	%0.2f%% \033[0m\n", ((double)missRate/(double)totalCount * 100));
+	printf("\033[31;1mJmeint Error:	%0.2f%% \033[0m\n", ((double)missRate/(double)totalCount * 100));
 	printf("\033[31;1m--------------------\033[0m\n\n");
 	#endif
 	printf("\033[37;1m\nThank you for using ** AxBench **...\033[0m\n\n");
