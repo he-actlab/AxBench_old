@@ -33,7 +33,7 @@ We actively work on **AxBench** to add more applications from different domains 
 
 1) After downloading the **AxBench**, please go to the *anpu.compiler* directory and run the Makefile. It will create a static library which will be later used to execute the applications on analog neural network model.
 
-2) Then, in the root directory specify the full path location of the *anpu.compiler* and the location of the FANN library.
+2) Then, in the root directory specify the full path location of the *anpu.compiler* and the location of the FANN library in *config.mk*.
 
 3) You are set to use **AxBench**. You can simply execute the *run.sh* script to make or run the each of the applications. 
 
