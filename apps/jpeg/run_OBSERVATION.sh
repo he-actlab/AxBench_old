@@ -11,5 +11,5 @@ echo -en "\033[36m"
 ./bin/${BENCHMARK}_NPU_OBSERVATION.out ./data/${IMAGE}.rgb ./data/${IMAGE}_observation.jpg
 echo -en "\033[0m"
 echo ""
-echo "Thank you for using ** npu.bench **..."
+echo "Thank you for using ** AxBench **..."
 echo ""
