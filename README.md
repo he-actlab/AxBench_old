@@ -1,4 +1,4 @@
-**AxBench** is a benchmark suite for approximate computing. We develop **AxBench** aiming to provide a set of representative applications from various domains to explore different aspect of the approximate computing. **AxBench** is developed by Amir Yazdanbakhsh in Georgia Institute of Technology under the supervision of Prof. Hadi Esmaeilzadeh.
+**AxBench** is a benchmark suite for approximate computing. We develop **AxBench** in C++ aiming to provide a set of representative applications from various domains to explore different aspect of the approximate computing. **AxBench** is developed by Amir Yazdanbakhsh in Georgia Institute of Technology under the supervision of Prof. Hadi Esmaeilzadeh.
 
 *** === Papers === ***
 
