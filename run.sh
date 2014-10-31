@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USAGE="usage: run.sh [make|run] [FANN|ANALOG|OBSERVATION] [all|blacksholes|fft|inversek2j|jmeint|jpeg|kmeans|sobel]"
+USAGE="usage: run.sh [make|run] [observation|fann] [blacksholes|fft|inversek2j|jmeint|jpeg|kmeans|sobel|all]"
 
 function printUsage()
 {
@@ -26,13 +26,30 @@ function MakeSrc()
 	fi	
 	echo "enter $1, making..."
 	cd apps/$1
-	make NPU_MODE=NPU_FANN
-	echo -en "\033[36m"
-	echo ""
-	echo "---------- application ** $1 ** made successfully ----------"
-	echo ""
-	echo -en "\033[0m"
-	cd -
+
+	if [ "$2" = "fann" ]
+	then
+		make NPU_MODE=NPU_FANN
+		echo -en "\033[36m"
+		echo ""
+		echo "---------- application ** $1 ** made successfully for fann mode ----------"
+		echo ""
+		echo -en "\033[0m"
+		cd -
+	elif [ "$2" = "observation" ]
+	then
+		make NPU_MODE=NPU_OBSERVATION
+		echo -en "\033[36m"
+		echo ""
+		echo "---------- application ** $1 ** made successfully for observation mode ----------"
+		echo ""
+		echo -en "\033[0m"
+		cd -
+	else
+		printUsage
+		exit
+	fi
+	
 }
 
 function RunSrc()
@@ -44,7 +61,18 @@ function RunSrc()
 	fi	
 	echo "enter $1, running..."
 	cd apps/$1
-	./run_FANN.sh
+	if [ "$2" = "fann" ]
+	then
+		chmod 777 run_FANN.sh
+		./run_FANN.sh
+	elif [ "$2" = "observation" ]
+	then
+		chmod 777 run_OBSERVATION.sh
+		./run_OBSERVATION.sh
+	else
+		printUsage
+		exit
+	fi
 	echo -en "\033[36m"
 	echo "---------------------------------------------------------"
 	echo ""
@@ -56,42 +84,42 @@ function RunSrc()
 #check the number of command line arguments
 if [ $# -lt 3 ]
 then
-		printUsage
-        exit
+	printUsage
+    exit
 fi
 
 if [ "$1" = "make" ]
 then
 	case $3 in
 		"blackscholes")
-			MakeSrc $3
+			MakeSrc $3 $2
 		;;
 		"fft")
-			MakeSrc $3
+			MakeSrc $3 $2
 		;;
 		"inversek2j")
-			MakeSrc $3
+			MakeSrc $3 $2
 		;;
 		"jmeint")
-			MakeSrc $3
+			MakeSrc $3 $2
 		;;
 		"jpeg")
-			MakeSrc $3
+			MakeSrc $3 $2
 		;;
 		"kmeans")
-			MakeSrc $3
+			MakeSrc $3 $2
 		;;
 		"sobel")
-			MakeSrc $3
+			MakeSrc $3 $2
 		;;
 		"all")
-			MakeSrc blackscholes
-			MakeSrc fft
-			MakeSrc inversek2j
-			MakeSrc	jmeint
-			MakeSrc jpeg
-			MakeSrc kmeans
-			MakeSrc sobel
+			MakeSrc blackscholes $2
+			MakeSrc fft $2
+			MakeSrc inversek2j $2
+			MakeSrc	jmeint $2
+			MakeSrc jpeg $2
+			MakeSrc kmeans $2
+			MakeSrc sobel $2
 		;;
 	*)
 		printUsage
@@ -102,34 +130,34 @@ elif [ "$1" = "run" ]
 then
 		case $3 in
 		"blackscholes")
-			RunSrc $3
+			RunSrc $3 $2
 		;;
 		"fft")
-			RunSrc $3
+			RunSrc $3 $2
 		;;
 		"inversek2j")
-			RunSrc $3
+			RunSrc $3 $2
 		;;
 		"jmeint")
-			RunSrc $3
+			RunSrc $3 $2
 		;;
 		"jpeg")
-			RunSrc $3
+			RunSrc $3 $2
 		;;
 		"kmeans")
-			RunSrc $3
+			RunSrc $3 $2
 		;;
 		"sobel")
-			RunSrc $3
+			RunSrc $3 $2
 		;;
 		"all")
-			RunSrc blackscholes
-			RunSrc fft
-			RunSrc inversek2j
-			RunSrc	jmeint
-			RunSrc jpeg
-			RunSrc kmeans
-			RunSrc sobel
+			RunSrc blackscholes $2
+			RunSrc fft $2
+			RunSrc inversek2j $2
+			RunSrc	jmeint $2
+			RunSrc jpeg $2
+			RunSrc kmeans $2
+			RunSrc sobel $2
 		;;
 	*)
 		printUsage
