@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USAGE="usage: run.sh [make|run] [observation|fann] [blacksholes|fft|inversek2j|jmeint|jpeg|kmeans|sobel|all]"
+USAGE="usage: run.sh [make|run] [observation|fann] [blackscholes|fft|inversek2j|jmeint|jpeg|kmeans|sobel|all]"
 
 function printUsage()
 {
