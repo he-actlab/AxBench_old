@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 	    //printf("Total Error:			\t\t%f\n", e);
 	    e = 100.0 * (e / (float)count);
 	    printf("\033[31;1m--------------------\033[0m\n");
-	    printf("\033[31;1mError:	%0.2f%% \033[0m\n", e);
+	    printf("\033[31;1mFFT Error:	%0.2f%% \033[0m\n", e);
 	    printf("\033[31;1m--------------------\033[0m\n\n");
 	    #endif
 	    printf("\033[37;1m\nThank you for using ** AxBench **...\033[0m\n\n");
