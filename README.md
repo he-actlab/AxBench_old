@@ -1,4 +1,4 @@
-**AxBench** is a benchmark suite for approximate computing. We develop **AxBench** in C++ aiming to provide a set of representative applications from various domains to explore different aspect of the approximate computing. **AxBench** is developed in Alternative Computing Technologies (ACT) Laboratory in Georgia Institute of Technology.
+**AxBench** is a benchmark suite for approximate computing. We develop **AxBench** in C++, aiming to provide a set of representative applications from various domains to explore different aspect of the approximate computing. **AxBench** is developed in Alternative Computing Technologies (ACT) Laboratory in Georgia Institute of Technology.
 
 *** === Papers === ***
 
