@@ -13,7 +13,7 @@ echo -en "\033[0m"
 compare -metric RMSE ./data/${IMAGE}_FANN.jpg ./data/${IMAGE}.jpg null > tmp.log 2> tmp.err
 echo -en "\033[31m"
 echo "--------------------"
-awk '{ 	printf("Error: %0.2f%\n",substr($2, 2, length($2) - 2) * 100) }' tmp.err
+awk '{ 	printf("JPEG Error: %0.2f%\n",substr($2, 2, length($2) - 2) * 100) }' tmp.err
 echo "--------------------"
 echo -en "\033[0m"
 echo ""
