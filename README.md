@@ -12,7 +12,7 @@ We actively work on **AxBench** to add more applications from different domains 
 
 *** === Applications === ***
 
-1. **BlackScholes [Financial Analysis]**: This application calculates the price of European options. We adapted this benchmark from Parsec benchmark suite to use for approximate computing purpose. 
+1. **BlackScholes [Financial Analysis]**: This application calculates the price of European options. We adapted this benchmark from **Parsec** benchmark suite to use for approximate computing purpose. 
 2. **FFT [Signal Processing]**: This application calculates the radix-2 Cooley-Turkey Fast Fourier for a set of random floating point numbers. 
 3. **Inversek2j [Robotics]**: This applications find the coordinate of a 2-joint arm given their angle.
 4. **Jmeint [3D Gaming]**: This application detects the intersection of two 3D triangles.
