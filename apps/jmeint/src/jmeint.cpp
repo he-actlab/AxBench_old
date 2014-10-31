@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
 
 #ifdef NPU_OBSERVATION
 	std::ofstream jmeintDataFile ;
-	jmeintDataFile.open("./train/jmeint_train.data") ;
+	jmeintDataFile.open("./data/jmeint_observation.data") ;
 	jmeintDataFile.precision(4) ;
 
 	jmeintDataFile << n << std::endl ;
@@ -152,7 +152,7 @@ int main(int argc, char* argv[])
 	{
 		totalCount++ ;
 		#ifdef NPU_OBSERVATION
-			for(j = 0 ; j < 6; ++j)
+			for(int j = 0 ; j < 6; ++j)
 			{
 					jmeintDataFile << xyz[i + 3 * j + 0] << " " << xyz[i + 3 * j + 1] << " " << xyz[i + 3 * j + 2] ;
 					if(j < 5)
@@ -262,10 +262,12 @@ int main(int argc, char* argv[])
 	xyz = NULL ;
 
 
+	#ifndef NPU_OBSERVATION
 	printf("\033[31;1m--------------------\033[0m\n");
 	printf("\033[31;1mError:	%0.2f%% \033[0m\n", ((double)missRate/(double)totalCount * 100));
 	printf("\033[31;1m--------------------\033[0m\n\n");
-	printf("Thank you for using ** npu.bench **...\n\n");
+	#endif
+	printf("\033[37;1m\nThank you for using ** AxBench **...\033[0m\n\n");
 
 	#ifdef NPU_ANALOG
 		diffFile.close() ;
