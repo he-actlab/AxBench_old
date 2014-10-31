@@ -10,8 +10,8 @@ echo -en "\033[36m"
 ./bin/${BENCHMARK}_NPU_FANN.out ./data/peppers-512px.rgb ./cfg/${BENCHMARK}_FANN.nn
 echo -en "\033[0m"
 cd data
-python png2rgb.py png peppers-512px.rgb_fann.rgb peppers-512px_FANN.png > /tmp/out1
-python png2rgb.py png peppers-512px.rgb_orig.rgb peppers-512px_orig.png > /tmp/out2
+python png2rgb.py png peppers-512px.rgb_fann.rgb peppers-512px_FANN.png > out1.tmp
+python png2rgb.py png peppers-512px.rgb_orig.rgb peppers-512px_orig.png > out2.tmp
 compare -metric RMSE peppers-512px_FANN.png peppers-512px_orig.png null > tmp.log 2> tmp.err
 echo -en "\033[31m"
 echo "--------------------"
@@ -23,3 +23,5 @@ echo "Thank you for using ** AxBench **..."
 echo ""
 rm -rf tmp.err
 rm -rf tmp.log
+rm -rf out1.tmp
+rm -rf out2.tmp
