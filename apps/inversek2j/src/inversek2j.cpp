@@ -114,7 +114,7 @@ int main(int argc, const char* argv[])
 
 	#ifdef NPU_OBSERVATION
 		std::ofstream dataFile ;
-		dataFile.open("./train/inversek2j.data");
+		dataFile.open("./data/inversek2j_observation.data");
 		dataFile.precision(8);
 		dataFile << n << std::endl ;
 		dataFile << 2 << std::endl ;
@@ -189,9 +189,11 @@ int main(int argc, const char* argv[])
 
 
 
+	#ifndef NPU_OBSERVATION
 	double e = 0 ;
 	int count = 0;
 	double absError = 0.0;
+	#endif
 
 	for(int i = 0 ; i < n * 2 * 2 ; i += 2 * 2)
 	{
@@ -290,11 +292,13 @@ int main(int argc, const char* argv[])
 		#endif
 	}
 
-	absError = (absError / (double) count) * 100.0 ;
-	printf("\033[31;1m--------------------\033[0m\n");
-	printf("\033[31;1mError:	%0.2f%% \033[0m\n", absError);
-	printf("\033[31;1m--------------------\033[0m\n\n");
-	printf("Thank you for using ** npu.bench **...\n\n");
+	#ifdef NPU_FANN
+		absError = (absError / (double) count) * 100.0 ;
+		printf("\033[31;1m--------------------\033[0m\n");
+		printf("\033[31;1mError:	%0.2f%% \033[0m\n", absError);
+		printf("\033[31;1m--------------------\033[0m\n\n");
+	#endif
+		printf("\033[37;1m\nThank you for using ** AxBench **...\033[0m\n\n");
 
 	#ifdef NPU_VALIDATION
 		std::cout << "##################################################" << std::endl ;
