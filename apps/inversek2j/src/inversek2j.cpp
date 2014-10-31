@@ -295,7 +295,7 @@ int main(int argc, const char* argv[])
 	#ifdef NPU_FANN
 		absError = (absError / (double) count) * 100.0 ;
 		printf("\033[31;1m--------------------\033[0m\n");
-		printf("\033[31;1mError:	%0.2f%% \033[0m\n", absError);
+		printf("\033[31;1mInversek2j Error:	%0.2f%% \033[0m\n", absError);
 		printf("\033[31;1m--------------------\033[0m\n\n");
 	#endif
 		printf("\033[37;1m\nThank you for using ** AxBench **...\033[0m\n\n");
