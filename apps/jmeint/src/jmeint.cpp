@@ -24,7 +24,9 @@ int main(int argc, char* argv[])
 	int x ;
 	int n ;
 
+	#ifndef NPU_OBSERVATION
 	int x_orig ;
+	#endif
 	std::cout.precision(8);
 
 	n = atoi(argv[1]) ;
@@ -142,7 +144,9 @@ int main(int argc, char* argv[])
 
 #endif
 
+	#ifndef NPU_OBSERVATION
 	int missRate = 0 ;
+	#endif
 	int totalCount = 0 ;
 
 	//double output = 0.0;
