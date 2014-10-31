@@ -33,9 +33,9 @@ We actively work on **AxBench** to add more applications from different domains 
 
 1) After downloading the **AxBench**, please go to the *anpu.compiler* directory and run the Makefile. It will create a static library which will be later used to execute the applications on analog neural network model.
 
-2) Then, in the root directory specify the full path location of the *anpu.compiler* and the location of the FANN library.
+2) Then, in the root directory specify the **full path** location of the *anpu.compiler* and the location of the FANN library in *config.mk*.
 
-3) You are set to use **AxBench**. You can simply execute the *run.sh* script to make or run the each of the applications. 
+3) You are set to use **AxBench**. You can simply execute the *run.sh* script to make or run each of the applications. 
 
 **AxBench** can be run in precise or various approximate modes. Currently, we support two modes, namely *NPU_OBSERVATION* and *NPU_FANN*. The observation mode simply runs the applications in the precise mode and generates the precise outputs in the data directory. The FANN mode runs the applications on a NN and generates the approximate output and reports the output error. The NN configuration for each application are placed in the corresponding application directory inside the *cfg* directory.
  
