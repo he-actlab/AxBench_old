@@ -16,6 +16,6 @@ python process_data.py npu_fann_diff.data
 echo "--------------------"
 echo -en "\033[0m"
 echo ""
-echo "Thank you for using ** npu.bench **..."
+echo "Thank you for using ** AxBench **..."
 echo ""
 cd ..

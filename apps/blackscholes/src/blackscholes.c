@@ -279,14 +279,15 @@ int bs_thread(void *tid_ptr) {
 
     #ifdef NPU_OBSERVATION
         std::ofstream fann_observation;
-        fann_observation.open("./train/blackscholes.data") ;
+        fann_observation.open("./data/blackscholes_observation.data") ;
         fann_observation << "48305\n6\n1\n";
     #endif
 
 
-
+#ifndef NPU_OBSERVATION
 int count_nn_errors = 0;
 int count_nn_total  = 0;
+#endif
 
     for (j=0; j<NUM_RUNS; j++) {
         for (i=start; i<end; i++) {
