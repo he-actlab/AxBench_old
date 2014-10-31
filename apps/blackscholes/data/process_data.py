@@ -60,7 +60,7 @@ for i in range(len(price_orig)):
 #print "----------- Original Prices -------------------"
 #print "# Total item:             " + str(len(price_orig))
 #print "# Total Relative Error:   " + str(absError)
-print "Error: " + (str(round(absError/count*100,2))) + "%"
+print "BlackScholes Error: " + (str(round(absError/count*100,2))) + "%"
 
 
 
