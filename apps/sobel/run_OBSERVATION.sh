@@ -11,7 +11,9 @@ echo -en "\033[36m"
 ./bin/${BENCHMARK}_NPU_OBSERVATION.out ./data/${IMAGE}.rgb ./data/${IMAGE}.data
 echo -en "\033[0m"
 cd data
-python png2rgb.py png observation.rgb ${IMAGE}.observation.png > /tmp/out1
+python png2rgb.py png observation.rgb ${IMAGE}.observation.png > out1.tmp
 echo ""
 echo "Thank you for using ** AxBench **..."
 echo ""
+
+rm -rf out1.tmp
