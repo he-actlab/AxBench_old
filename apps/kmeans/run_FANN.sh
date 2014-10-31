@@ -15,7 +15,7 @@ python png2rgb.py png peppers-512px.rgb_orig.rgb peppers-512px_orig.png > out2.t
 compare -metric RMSE peppers-512px_FANN.png peppers-512px_orig.png null > tmp.log 2> tmp.err
 echo -en "\033[31m"
 echo "--------------------"
-awk '{ 	printf("Error: %0.2f%\n",substr($2, 2, length($2) - 2) * 100) }' tmp.err
+awk '{ 	printf("Kmeans Error: %0.2f%\n",substr($2, 2, length($2) - 2) * 100) }' tmp.err
 echo "--------------------"
 echo -en "\033[0m"
 echo ""
