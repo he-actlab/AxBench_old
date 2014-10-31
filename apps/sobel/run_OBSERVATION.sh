@@ -13,5 +13,5 @@ echo -en "\033[0m"
 cd data
 python png2rgb.py png observation.rgb ${IMAGE}.observation.png > /tmp/out1
 echo ""
-echo "Thank you for using ** npu.bench **..."
+echo "Thank you for using ** AxBench **..."
 echo ""

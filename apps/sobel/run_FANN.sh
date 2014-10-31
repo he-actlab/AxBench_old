@@ -20,7 +20,7 @@ awk '{ 	printf("Error: %0.2f%\n",substr($2, 2, length($2) - 2) * 100) }' tmp.err
 echo "--------------------"
 echo -en "\033[0m"
 echo ""
-echo "Thank you for using ** npu.bench **..."
+echo "Thank you for using ** AxBench **..."
 echo ""
 rm -rf tmp.err
 rm -rf tmp.log
