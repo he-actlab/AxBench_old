@@ -27,6 +27,6 @@ for l in lines:
 	b = convert2dec(splitted[1], tot_bits, frac_bits)
 	c = convert2dec(splitted[2], tot_bits, frac_bits)
 
-	print "%s(%s) + %s(%s) = %s(%s)" % (a, splitted[0], b, splitted[1], c, splitted[2])
+	print "%s(%s) * %s(%s) = %s(%s)" % (a, splitted[0], b, splitted[1], c, splitted[2])
 
 pass;
