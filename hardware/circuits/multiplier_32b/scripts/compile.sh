@@ -11,6 +11,9 @@ echo -e "******************************************${nc}"
 
 echo -e "${green} # Compiling 32-bit Wallace-Tree Multiplier...${nc}"
 
+if [ ! -d ../log ];then
+	mkdir ../log
+fi
 
 ncverilog -C ../rtl/multiplier_32b.v > ../log/multiplier_32b.log
 

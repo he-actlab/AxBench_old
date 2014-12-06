@@ -11,6 +11,10 @@ echo -e "******************************************${nc}"
 
 echo -e "${green} # Compiling 32-bit Han-Carlson Adder...${nc}"
 
+if [ ! -d ../log ];then
+	mkdir ../log
+fi
+
 ncverilog -C ../rtl/han_carlson_32b.v > ../log/han_carlson_32b.log
 
 echo -e "${blue}Thanks you...${nc}\n"

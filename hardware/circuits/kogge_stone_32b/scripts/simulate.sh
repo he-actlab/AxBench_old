@@ -11,6 +11,14 @@ echo -e "******************************************${nc}"
 
 echo -e "${green} # Simulating 32-bit Kogge-Stone Adder...${nc}"
 
+if [ ! -d ../log ];then
+	mkdir ../log
+fi
+
+if [ ! -d ../outputs ];then
+	mkdir ../outputs
+fi
+
 ncverilog ../testbench/kogge_stone_32b_tb.v > ../log/kogge_stone_32b_tb.log
 
 echo -e "${blue}Thanks you...${nc}\n"

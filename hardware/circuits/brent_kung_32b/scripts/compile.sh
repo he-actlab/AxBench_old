@@ -11,6 +11,10 @@ echo -e "******************************************${nc}"
 
 echo -e "${green} # Compiling 32-bit Brent-Kung Adder...${nc}"
 
+if [ ! -d ../log ];then
+	mkdir ../log
+fi
+
 ncverilog -C ../rtl/brent_kung_32b.v > ../log/brent_kung_32b.log
 
 echo -e "${blue}Thanks you...${nc}\n"

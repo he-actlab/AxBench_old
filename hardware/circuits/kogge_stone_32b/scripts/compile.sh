@@ -11,6 +11,9 @@ echo -e "******************************************${nc}"
 
 echo -e "${green} # Compiling 32-bit Kogge-Stone Adder...${nc}"
 
+if [ ! -d ../log ];then
+	mkdir ../log
+fi
 
 ncverilog -C ../rtl/kogge_stone_32b.v > ../log/kogge_stone_32b.log
 
