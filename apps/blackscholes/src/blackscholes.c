@@ -88,6 +88,16 @@ int numError = 0;
 // See Hull, Section 11.8, P.243-244
 #define inv_sqrt_2xPI 0.39894228040143270286
 
+double max_sqrt = -99999999999999.9;
+double min_sqrt = 99999999999999.9;
+
+double max_log = -99999999999999.9;
+double min_log = 99999999999999.9;
+
+double max_exp = -99999999999999.9;
+double min_exp = 99999999999999.9;
+
+
 fptype CNDF ( fptype InputX ) 
 {
     int sign;
@@ -112,6 +122,14 @@ fptype CNDF ( fptype InputX )
     xInput = InputX;
  
     // Compute NPrimeX term common to both four & six decimal accuracy calcs
+
+    // amir
+    if(-0.5f * InputX * InputX > max_exp)
+        max_exp = -0.5f * InputX * InputX;
+    if(-0.5f * InputX * InputX < min_exp)
+        min_exp = -0.5f * InputX * InputX;
+    // rima
+
     expValues = exp(-0.5f * InputX * InputX);
     xNPrimeofX = expValues;
     xNPrimeofX = xNPrimeofX * inv_sqrt_2xPI;
@@ -157,6 +175,9 @@ fptype CNDF ( fptype InputX )
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
+
+
+
 fptype BlkSchlsEqEuroNoDiv( fptype sptprice,
                             fptype strike, fptype rate, fptype volatility,
                             fptype time, int otype, float timet, fptype* N1, fptype* N2)
@@ -192,9 +213,25 @@ fptype BlkSchlsEqEuroNoDiv( fptype sptprice,
     xTime = time;
 
 
+    // amir
+    if(xTime > max_sqrt)
+        max_sqrt = xTime;
+    if(xTime < min_sqrt)
+        min_sqrt = xTime;
+    // rima
+
+
     xSqrtTime = sqrt(xTime);
 
     logValues = log( sptprice / strike );
+
+    // amir
+    if(sptprice / strike > max_log)
+        max_log = sptprice / strike;
+    if(sptprice / strike < min_log)
+        min_log = sptprice / strike;
+    // rima
+
         
     xLogTerm = logValues;
         
@@ -228,6 +265,14 @@ fptype BlkSchlsEqEuroNoDiv( fptype sptprice,
 
     *N1 = NofXd1 ;
     *N2 = NofXd2 ;
+
+    // amir
+    if(-(rate)*(time) > max_exp)
+        max_exp = -(rate)*(time);
+    if(-(rate)*(time) < min_exp)
+        min_exp = -(rate)*(time);
+    // rima
+
 
     FutureValueX = strike * ( exp( -(rate)*(time) ) );        
     if (otype == 0) {            
@@ -695,6 +740,10 @@ int main (int argc, char **argv)
 // #endif
     free(data);
     free(prices);
+
+    printf("Log: [%f, %f]\n", min_log, max_log);
+    printf("Sqrt: [%f, %f]\n", min_sqrt, max_sqrt);
+    printf("Exp: [%f, %f]\n", min_exp, max_exp);
 
     return 0;
 }
