@@ -6,9 +6,6 @@ We actively work on **AxBench** to add more applications from different domains 
 
           1. H. Esmaeilzadeh, A. Sampson, L. Ceze, D. Burger, 
               "Neural acceleration for general-purpose approximate programs", MICRO 2012.
-          
-          2. R. Amant, A. Yazdanbakhsh, J. Park, B. Thwaites, H. Esmaeilzadeh, A. Hassibi, L. Ceze, D. Burger,
-              "General-Purpose Code Acceleration with Limited-Precision Analog Computation", ISCA 2014.
 
 *** === Applications === ***
 
@@ -31,13 +28,13 @@ We actively work on **AxBench** to add more applications from different domains 
 
 *** === Build and Run AxBench ===***
 
-1) After downloading the **AxBench**, please go to the *anpu.compiler* directory and run the Makefile. It will create a static library which will be later used to execute the applications on analog neural network model.
+1) After downloading the **AxBench**, please go to the *parrot.c/src* directory and run *bash buildlib.sh*. It will create a static library which will be later used to execute the Parrot transformation on the applications.
 
-2) Then, in the root directory specify the **full path** location of the *anpu.compiler* and the location of the FANN library in *config.mk*.
+2) Then, modify **config.mk** in the **applications** folder with the location of the Parrot and FANN library.
 
 3) You are set to use **AxBench**. You can simply execute the *run.sh* script to make or run each of the applications. 
 
-**AxBench** can be run in precise or various approximate modes. Currently, we support two modes, namely *NPU_OBSERVATION* and *NPU_FANN*. The observation mode simply runs the applications in the precise mode and generates the precise outputs in the data directory. The FANN mode runs the applications on a NN and generates the approximate output and reports the output error. The NN configuration for each application are placed in the corresponding application directory inside the *cfg* directory.
+**AxBench** contains both the applications and the necessary annotations for execution on NPU.
  
 *** === Software License === ***
 
