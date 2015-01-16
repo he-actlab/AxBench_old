@@ -34,7 +34,7 @@ We actively work on **AxBench** to add more applications from different domains 
 
 3) You are set to use **AxBench**. You can simply execute the **run.sh** script to make or run each of the applications. 
 
-** === Compilation Parameters ===***
+*** === Compilation Parameters ===***
 
 There are some parameters that need to be specified by the user during the compilation. Here you can see a brief explanation about each of these parameters.
 
@@ -53,6 +53,7 @@ There are some parameters that need to be specified by the user during the compi
 *** === Adding new benchmarks ===***
 
 You can easily add new benchmarks to **AxBench**. These are the necessary steps that need to be followed.
+
 1) Run ** bash run.sh setup <application name>**.
 
 2) Put the source files into the **src** directory and annotate the region of interest with the **Parrot** semantics.
