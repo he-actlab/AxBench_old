@@ -1,4 +1,4 @@
-**AxBench** is a benchmark suite for approximate computing. We develop **AxBench** in C++, aiming to provide a set of representative applications from various domains to explore different aspect of the approximate computing. **AxBench** is developed in Alternative Computing Technologies (ACT) Laboratory, Georgia Institute of Technology.
+**AxBench** is a benchmark suite with the necessary annotations for approximate computing. We develop **AxBench** in C++, aiming to provide a set of representative applications from various domains to explore different aspect of the approximate computing. **AxBench** is developed in Alternative Computing Technologies (ACT) Laboratory, Georgia Institute of Technology.
 
 *** === Papers === ***
 
@@ -28,13 +28,30 @@ We actively work on **AxBench** to add more applications from different domains 
 
 *** === Build and Run AxBench ===***
 
-1) After downloading the **AxBench**, please go to the *parrot.c/src* directory and run *bash buildlib.sh*. It will create a static library which will be later used to execute the Parrot transformation on the applications.
+1) After downloading the **AxBench**, please go to the **parrot.c/src** directory and run **bash buildlib.sh**. It will create a static library which will be later used to execute the Parrot transformation on the applications.
+2) Then, modify **config.mk** in the **applications** folder with the location of the **Parrot** and **FANN library**.
+3) You are set to use **AxBench**. You can simply execute the **run.sh** script to make or run each of the applications. 
 
-2) Then, modify **config.mk** in the **applications** folder with the location of the Parrot and FANN library.
+** === Compilation Parameters ===***
 
-3) You are set to use **AxBench**. You can simply execute the *run.sh* script to make or run each of the applications. 
+There are some parameters that need to be specified by the user during the compilation. Here you can see a brief explanation about each of these parameters.
 
-**AxBench** contains both the applications and the necessary annotations for execution on NPU.
+1) ** Learning rate: ** Rate of learning for RPROP algorithm.
+2) ** Epoch number: ** Number of epochs for training. 
+3) ** Sampling Rate: ** The percentage of data which is used for training and testing.
+4) ** Test data fraction: ** The percentage of sampled data which is used for testing the obtained neural network.
+5) ** Maximum number of layers: ** The maximum number of layers in the neural network.
+6) ** Maximum number of neurons per layer: ** The maximum number of neurons per each hidden layer.
+
+*** === Adding new benchmarks ===***
+
+You can easily add new benchmarks to **AxBench**. These are the necessary steps that need to be followed.
+1) Run ** bash run.sh setup <application name>**.
+2) Put the source files into the **src** directory and annotate the region of interest with the **Parrot** semantics.
+3) Put the train and test datasets into their corresponding folders (train.data and test.data).
+4) Create ** Makefile **, **Makefile_nn**, **run_observation.sh**, and **run_NN.sh**. You may get help on how to create these files from other application directories.
+5) Run ** bash run.sh make <application name>** to build the application.
+6) Run ** bash run.sh run <application name>** to apply Parrot transformation and replace the region of interest with a neural network.
  
 *** === Software License === ***
 
