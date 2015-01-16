@@ -2,7 +2,7 @@
 
 *** === Papers === ***
 
-We actively work on **AxBench** to add more applications from different domains (e.g. Computer Vision, Data Analytics, Multimedia, Web Search, Finance, etc.). We will also be working on adding different features to this benchmark suite in order to enable researchers to study different aspects of approximate computing.  As a courtesy to the developers, we ask that you please cite our papers from MICRO'12 and ISCA'14 describing the suite:
+We actively work on **AxBench** to add more applications from different domains (e.g. Computer Vision, Data Analytics, Multimedia, Web Search, Finance, etc.). We will also be working on adding different features to this benchmark suite in order to enable researchers to study different aspects of approximate computing.  As a courtesy to the developers, we ask that you please cite our papers from MICRO'12 describing the suite:
 
           1. H. Esmaeilzadeh, A. Sampson, L. Ceze, D. Burger, 
               "Neural acceleration for general-purpose approximate programs", MICRO 2012.
